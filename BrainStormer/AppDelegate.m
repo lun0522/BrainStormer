@@ -21,6 +21,7 @@ static NSString *const BSM_AVOSCloudAppKey = @"taVP3U4xG0JyFp5WM58ckSMA";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    [AVOSCloud setServiceRegion:AVServiceRegionUS];
     [AVOSCloud setApplicationId:BSM_AVOSCloudAppID
                       clientKey:BSM_AVOSCloudAppKey];
     [[FBSDKApplicationDelegate sharedInstance] application:application

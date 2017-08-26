@@ -17,10 +17,6 @@
 		BD2DE8121D9EA75700F33477 /* BrainStormerUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = BD2DE8111D9EA75700F33477 /* BrainStormerUITests.m */; };
 		BD2DE8281D9EA8ED00F33477 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD2DE8271D9EA8ED00F33477 /* LoginViewController.m */; };
 		BD2DE82D1D9ED0BB00F33477 /* brainstorm.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BD2DE82C1D9ED0BB00F33477 /* brainstorm.jpg */; };
-		BD2DE84A1D9EE22700F33477 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD2DE8461D9EE22700F33477 /* Bolts.framework */; };
-		BD2DE84B1D9EE22700F33477 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD2DE8471D9EE22700F33477 /* FBSDKCoreKit.framework */; };
-		BD2DE84C1D9EE22700F33477 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD2DE8481D9EE22700F33477 /* FBSDKLoginKit.framework */; };
-		BD2DE84D1D9EE22700F33477 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD2DE8491D9EE22700F33477 /* FBSDKShareKit.framework */; };
 		BD55F0CA1D9FDE9E00D3D2DF /* CreatGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD55F0C91D9FDE9E00D3D2DF /* CreatGroupViewController.m */; };
 		BD55F0E01DA03F4700D3D2DF /* HowToAddViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD55F0DF1DA03F4700D3D2DF /* HowToAddViewController.m */; };
 		BD55F0E61DA0406D00D3D2DF /* GroupListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD55F0E51DA0406D00D3D2DF /* GroupListViewController.m */; };
@@ -47,6 +43,10 @@
 		BDED02361DA664D8003DAEE4 /* dqd_arrowhead+UIBezierPath.m in Sources */ = {isa = PBXBuildFile; fileRef = BDED02351DA664D8003DAEE4 /* dqd_arrowhead+UIBezierPath.m */; };
 		BDED02391DA670CA003DAEE4 /* Arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = BDED02371DA670CA003DAEE4 /* Arrow.png */; };
 		BDED023A1DA670CA003DAEE4 /* unarrow.png in Resources */ = {isa = PBXBuildFile; fileRef = BDED02381DA670CA003DAEE4 /* unarrow.png */; };
+		BDEDBBC71F51ECB100DF116E /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDEDBBC31F51ECB100DF116E /* Bolts.framework */; };
+		BDEDBBC81F51ECB100DF116E /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDEDBBC41F51ECB100DF116E /* FBSDKCoreKit.framework */; };
+		BDEDBBC91F51ECB100DF116E /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDEDBBC51F51ECB100DF116E /* FBSDKLoginKit.framework */; };
+		BDEDBBCA1F51ECB100DF116E /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDEDBBC61F51ECB100DF116E /* FBSDKShareKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,10 +84,10 @@
 		BD2DE8261D9EA8ED00F33477 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		BD2DE8271D9EA8ED00F33477 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		BD2DE82C1D9ED0BB00F33477 /* brainstorm.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brainstorm.jpg; sourceTree = "<group>"; };
-		BD2DE8461D9EE22700F33477 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
-		BD2DE8471D9EE22700F33477 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
-		BD2DE8481D9EE22700F33477 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
-		BD2DE8491D9EE22700F33477 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
+		BD4A373A1F51E7D600A04F3F /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = ../../../Documents/FacebookSDK/Bolts.framework; sourceTree = "<group>"; };
+		BD4A373B1F51E7D600A04F3F /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../../Documents/FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		BD4A373C1F51E7D600A04F3F /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../../../Documents/FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		BD4A373D1F51E7D600A04F3F /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../../../Documents/FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		BD55F0C81D9FDE9E00D3D2DF /* CreatGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreatGroupViewController.h; sourceTree = "<group>"; };
 		BD55F0C91D9FDE9E00D3D2DF /* CreatGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreatGroupViewController.m; sourceTree = "<group>"; };
 		BD55F0CB1DA0027800D3D2DF /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
@@ -131,6 +131,10 @@
 		BDED02351DA664D8003DAEE4 /* dqd_arrowhead+UIBezierPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "dqd_arrowhead+UIBezierPath.m"; sourceTree = "<group>"; };
 		BDED02371DA670CA003DAEE4 /* Arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Arrow.png; sourceTree = "<group>"; };
 		BDED02381DA670CA003DAEE4 /* unarrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unarrow.png; sourceTree = "<group>"; };
+		BDEDBBC31F51ECB100DF116E /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = ../../../../Documents/FacebookSDK/Bolts.framework; sourceTree = "<group>"; };
+		BDEDBBC41F51ECB100DF116E /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../../../Documents/FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		BDEDBBC51F51ECB100DF116E /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../../../../Documents/FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		BDEDBBC61F51ECB100DF116E /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../../../../Documents/FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		BFF344B3DB490AF49DA0322E /* Pods-BrainStormer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BrainStormer.release.xcconfig"; path = "Pods/Target Support Files/Pods-BrainStormer/Pods-BrainStormer.release.xcconfig"; sourceTree = "<group>"; };
 		D4F493E97EF786D3E9D444C1 /* libPods-BrainStormer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BrainStormer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBD768C80E32182B6A5523EB /* Pods-BrainStormer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BrainStormer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BrainStormer/Pods-BrainStormer.debug.xcconfig"; sourceTree = "<group>"; };
@@ -141,11 +145,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BD2DE84D1D9EE22700F33477 /* FBSDKShareKit.framework in Frameworks */,
-				BD2DE84A1D9EE22700F33477 /* Bolts.framework in Frameworks */,
-				BD2DE84B1D9EE22700F33477 /* FBSDKCoreKit.framework in Frameworks */,
-				BD2DE84C1D9EE22700F33477 /* FBSDKLoginKit.framework in Frameworks */,
 				991531F289B8C02852E4107D /* libPods-BrainStormer.a in Frameworks */,
+				BDEDBBC81F51ECB100DF116E /* FBSDKCoreKit.framework in Frameworks */,
+				BDEDBBCA1F51ECB100DF116E /* FBSDKShareKit.framework in Frameworks */,
+				BDEDBBC91F51ECB100DF116E /* FBSDKLoginKit.framework in Frameworks */,
+				BDEDBBC71F51ECB100DF116E /* Bolts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -169,6 +173,10 @@
 		52CEB7A314BC2898DB954215 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BD4A373A1F51E7D600A04F3F /* Bolts.framework */,
+				BD4A373B1F51E7D600A04F3F /* FBSDKCoreKit.framework */,
+				BD4A373C1F51E7D600A04F3F /* FBSDKLoginKit.framework */,
+				BD4A373D1F51E7D600A04F3F /* FBSDKShareKit.framework */,
 				BD55F0CD1DA00DAC00D3D2DF /* Security.framework */,
 				BD55F0CB1DA0027800D3D2DF /* Photos.framework */,
 				BD6474A21D9FBD7100A419D1 /* MJRefresh */,
@@ -210,12 +218,12 @@
 				BD55F0E51DA0406D00D3D2DF /* GroupListViewController.m */,
 				BD55F10E1DA40F0800D3D2DF /* AddGroupControllers */,
 				BD55F10F1DA40F2300D3D2DF /* GroupRoomControllers */,
+				BDEDBBC21F51EC7D00DF116E /* Frameworks */,
 				BD2DE7F81D9EA75700F33477 /* Assets.xcassets */,
 				BD2DE7F51D9EA75700F33477 /* Main.storyboard */,
 				BD2DE7FA1D9EA75700F33477 /* LaunchScreen.storyboard */,
 				BD2DE7FD1D9EA75700F33477 /* Info.plist */,
 				BD2DE82B1D9ED0A600F33477 /* Images */,
-				BD2DE81F1D9EA76600F33477 /* Frameworks */,
 				BD2DE7EC1D9EA75700F33477 /* Supporting Files */,
 			);
 			path = BrainStormer;
@@ -255,17 +263,6 @@
 				BD2DE8131D9EA75700F33477 /* Info.plist */,
 			);
 			path = BrainStormerUITests;
-			sourceTree = "<group>";
-		};
-		BD2DE81F1D9EA76600F33477 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				BD2DE8461D9EE22700F33477 /* Bolts.framework */,
-				BD2DE8471D9EE22700F33477 /* FBSDKCoreKit.framework */,
-				BD2DE8481D9EE22700F33477 /* FBSDKLoginKit.framework */,
-				BD2DE8491D9EE22700F33477 /* FBSDKShareKit.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		BD2DE82B1D9ED0A600F33477 /* Images */ = {
@@ -316,6 +313,17 @@
 				BD60D8831DA7802300540825 /* StickerMenuViewController.m */,
 			);
 			name = GroupRoomControllers;
+			sourceTree = "<group>";
+		};
+		BDEDBBC21F51EC7D00DF116E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BDEDBBC31F51ECB100DF116E /* Bolts.framework */,
+				BDEDBBC41F51ECB100DF116E /* FBSDKCoreKit.framework */,
+				BDEDBBC51F51ECB100DF116E /* FBSDKLoginKit.framework */,
+				BDEDBBC61F51ECB100DF116E /* FBSDKShareKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		CDEAB60D51A844943D65FC22 /* Pods */ = {
@@ -697,6 +705,26 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/BrainStormer",
+					"~/Documents/FacebookSDK",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/AVOSCloud\"",
+					"\"${PODS_ROOT}/Headers/Public/AVOSCloudIM\"",
+					"\"${PODS_ROOT}/Headers/Public/CYLDeallocBlockExecutor\"",
+					"\"${PODS_ROOT}/Headers/Public/ChatKit\"",
+					"\"${PODS_ROOT}/Headers/Public/DACircularProgress\"",
+					"\"${PODS_ROOT}/Headers/Public/FDStackView\"",
+					"\"${PODS_ROOT}/Headers/Public/FMDB\"",
+					"\"${PODS_ROOT}/Headers/Public/MBProgressHUD\"",
+					"\"${PODS_ROOT}/Headers/Public/MJRefresh\"",
+					"\"${PODS_ROOT}/Headers/Public/MLLabel\"",
+					"\"${PODS_ROOT}/Headers/Public/MWPhotoBrowser\"",
+					"\"${PODS_ROOT}/Headers/Public/Masonry\"",
+					"\"${PODS_ROOT}/Headers/Public/SDWebImage\"",
+					"\"${PODS_ROOT}/Headers/Public/UITableView+FDTemplateLayoutCell\"",
+					"\"${PODS_ROOT}/Headers/Public/pop\"",
 				);
 				INFOPLIST_FILE = BrainStormer/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
@@ -715,6 +743,26 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/BrainStormer",
+					"~/Documents/FacebookSDK",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/AVOSCloud\"",
+					"\"${PODS_ROOT}/Headers/Public/AVOSCloudIM\"",
+					"\"${PODS_ROOT}/Headers/Public/CYLDeallocBlockExecutor\"",
+					"\"${PODS_ROOT}/Headers/Public/ChatKit\"",
+					"\"${PODS_ROOT}/Headers/Public/DACircularProgress\"",
+					"\"${PODS_ROOT}/Headers/Public/FDStackView\"",
+					"\"${PODS_ROOT}/Headers/Public/FMDB\"",
+					"\"${PODS_ROOT}/Headers/Public/MBProgressHUD\"",
+					"\"${PODS_ROOT}/Headers/Public/MJRefresh\"",
+					"\"${PODS_ROOT}/Headers/Public/MLLabel\"",
+					"\"${PODS_ROOT}/Headers/Public/MWPhotoBrowser\"",
+					"\"${PODS_ROOT}/Headers/Public/Masonry\"",
+					"\"${PODS_ROOT}/Headers/Public/SDWebImage\"",
+					"\"${PODS_ROOT}/Headers/Public/UITableView+FDTemplateLayoutCell\"",
+					"\"${PODS_ROOT}/Headers/Public/pop\"",
 				);
 				INFOPLIST_FILE = BrainStormer/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
