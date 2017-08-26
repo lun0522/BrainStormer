@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface OptionsTableViewController : UITableViewController
+@interface OptionsTableViewController : UITableViewController <UIPopoverPresentationControllerDelegate>
+
+@property (nonatomic,getter=isOn) BOOL SeeSlides;
 
 @end

@@ -10,4 +10,7 @@
 
 @interface InviteTableViewCell : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet UILabel *Name;
+@property (weak, nonatomic) IBOutlet UIImageView *Invited;
+
 @end

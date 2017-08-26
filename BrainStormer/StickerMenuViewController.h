@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface StickerMenuViewController : UITableViewController
+@interface StickerMenuViewController : UITableViewController <UIPopoverPresentationControllerDelegate>
 
 @end

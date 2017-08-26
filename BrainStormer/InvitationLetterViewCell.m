@@ -13,6 +13,11 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
+    self.Topic.tag = 1;
+    self.Inviter.tag = 2;
+    self.YesButton.tag = 3;
+    self.NoButton.tag = 4;
+    self.MoreInfo.tag = 5;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

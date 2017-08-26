@@ -8,17 +8,15 @@
 
 #import "HowToAddViewController.h"
 
-@interface HowToAddViewController () {
-    NSArray *ChoiceArray;
-}
-
+@interface HowToAddViewController ()
 @end
 
 @implementation HowToAddViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    ChoiceArray = [[NSArray alloc] initWithObjects:@"Join in a group",@"Creat a group", nil];
+    self.tableView.scrollEnabled = NO;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -57,13 +55,21 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSUInteger row = [indexPath row];
     if (row == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"JoininNotification" object:nil userInfo:@{}];
         [self dismissViewControllerAnimated:NO completion:nil];
-        UIViewController *vc= [self.storyboard instantiateViewControllerWithIdentifier:@"JoininGroup"];
-        [self.navigationController pushViewController:vc animated:YES];
     }else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateNotification" object:nil userInfo:@{}];
         [self dismissViewControllerAnimated:NO completion:nil];
-        UIViewController *vc= [self.storyboard instantiateViewControllerWithIdentifier:@"CreateGroup"];
-        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
+
+- ( void )tableView:( UITableView *)tableView willDisplayCell:( UITableViewCell *)cell forRowAtIndexPath:( NSIndexPath *)indexPath {
+    if ([cell respondsToSelector : @selector (setSeparatorInset:)]) {
+        [cell setSeparatorInset : UIEdgeInsetsZero ];
+    }
+    
+    if ([cell respondsToSelector : @selector (setLayoutMargins:)]) {
+        [cell setLayoutMargins : UIEdgeInsetsZero ];
     }
 }
 

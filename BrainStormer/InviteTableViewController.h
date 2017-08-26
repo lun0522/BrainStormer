@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AVOSCloud/AVOSCloud.h>
+#import "CreatGroupViewController.h"
 
 @interface InviteTableViewController : UITableViewController
+
+@property (nonatomic,strong) NSMutableArray *SelectedName;
+@property (nonatomic,strong) NSMutableArray *SelectedId;
 
 @end

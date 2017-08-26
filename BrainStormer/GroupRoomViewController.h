@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <ChatKit/LCChatKit.h>
+#import "PresentationViewController.h"
+#import "BoardViewController.h"
+#import "OptionsTableViewController.h"
 
 @interface GroupRoomViewController : UIViewController
+
+@property (nonatomic,strong) NSString *GroupId;
 
 @end

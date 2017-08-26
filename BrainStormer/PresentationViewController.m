@@ -16,22 +16,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+}
+- (IBAction)ShowFile:(id)sender {
+    NSURL *targetURL = [NSURL URLWithString:@"https://www.ics.uci.edu/~corps/phaseii/DiMaggioPowell-IronCageRevisited-ASR.pdf"];
+    NSURLRequest *request = [NSURLRequest requestWithURL:targetURL];
+    [self.Webview loadRequest:request];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 @end

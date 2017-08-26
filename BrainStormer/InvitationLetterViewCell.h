@@ -10,4 +10,10 @@
 
 @interface InvitationLetterViewCell : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet UILabel *Topic;
+@property (weak, nonatomic) IBOutlet UILabel *Inviter;
+@property (weak, nonatomic) IBOutlet UIButton *YesButton;
+@property (weak, nonatomic) IBOutlet UIButton *NoButton;
+@property (nonatomic, retain) IBOutlet UIButton *MoreInfo;
+
 @end

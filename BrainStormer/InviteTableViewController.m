@@ -8,7 +8,12 @@
 
 #import "InviteTableViewController.h"
 
-@interface InviteTableViewController ()
+@interface InviteTableViewController () {
+    NSArray *FriendNameList;
+    NSArray *FriendIdList;
+    NSMutableArray *TempNameList;
+    NSMutableArray *TempIdList;
+}
 
 @end
 
@@ -17,11 +22,36 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
+    AVUser *currentUser = [AVUser currentUser];
+    FriendNameList = [currentUser objectForKey:@"FriendNameList"];
+    FriendIdList = [currentUser objectForKey:@"FriendIdList"];
+    TempNameList = self.SelectedName;
+    TempIdList = self.SelectedId;
     
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    UIBarButtonItem *cancelBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleDone target:self action:@selector(cancelAction:)];
+    [[self navigationItem] setLeftBarButtonItem:cancelBarButton];
+    
+    UIBarButtonItem *doneBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(doneAction:)];
+    self.navigationItem.rightBarButtonItem = doneBarButton;
+}
+
+- (void)cancelAction:(id)sender {
+    [TempNameList removeAllObjects];
+    [TempIdList removeAllObjects];
+    TempNameList = self.SelectedName;
+    TempIdList = self.SelectedId;
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)doneAction:(id)sender {
+    CreatGroupViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"CreateGroup"];
+    [vc.InviteNameList removeAllObjects];
+    [vc.InviteIdList removeAllObjects];
+    vc.InviteNameList = TempNameList;
+    vc.InviteIdList = TempIdList;
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"InvitedChangeNotification" object:nil userInfo:@{}];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -32,67 +62,54 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Incomplete implementation, return the number of sections
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete implementation, return the number of rows
-    return 0;
+    return [FriendNameList count];
 }
 
-/*
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+    NSUInteger row = [indexPath row];
     
-    // Configure the cell...
+    static NSString * CellIdentifier = @"CellIdentifier";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    cell = [[[NSBundle mainBundle] loadNibNamed:@"InviteTableViewCell" owner:nil options:nil] firstObject];
+    
+    cell.userInteractionEnabled = YES;
+    UILabel *Name = (UILabel *)[cell viewWithTag:1];
+    Name.text = [FriendNameList objectAtIndex:row];
+    UIImageView *Invited = (UIImageView *)[cell viewWithTag:2];
+    UILabel *Id = (UILabel *)[cell viewWithTag:3];
+    Id.text = [FriendIdList objectAtIndex:row];
+    
+    Id.hidden = YES;
+    if ([self.SelectedName containsObject:Name.text]) {
+        Invited.hidden = NO;
+    }else {
+        Invited.hidden = YES;
+    }
+    Invited.image = [UIImage imageNamed:@"invited.png"];
     
     return cell;
 }
-*/
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    UILabel *Name = (UILabel *)[cell viewWithTag:1];
+    UIImageView *Invited = (UIImageView *)[cell viewWithTag:2];
+    UILabel *Id = (UILabel *)[cell viewWithTag:3];
+    
+    if (Invited.hidden) {    //Not selected before
+        [TempNameList addObject:Name.text];
+        [TempIdList addObject:Id.text];
+        Invited.hidden = NO;
+    }else {    //Selected before
+        [TempNameList removeObject:Name.text];
+        [TempIdList removeObject:Id.text];
+        Invited.hidden = YES;
+    }
 }
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

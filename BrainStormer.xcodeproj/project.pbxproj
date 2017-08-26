@@ -7,14 +7,46 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		991531F289B8C02852E4107D /* libPods-BrainStormer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4F493E97EF786D3E9D444C1 /* libPods-BrainStormer.a */; };
 		BD2DE7EE1D9EA75700F33477 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BD2DE7ED1D9EA75700F33477 /* main.m */; };
 		BD2DE7F11D9EA75700F33477 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BD2DE7F01D9EA75700F33477 /* AppDelegate.m */; };
-		BD2DE7F41D9EA75700F33477 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD2DE7F31D9EA75700F33477 /* ViewController.m */; };
 		BD2DE7F71D9EA75700F33477 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD2DE7F51D9EA75700F33477 /* Main.storyboard */; };
 		BD2DE7F91D9EA75700F33477 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BD2DE7F81D9EA75700F33477 /* Assets.xcassets */; };
 		BD2DE7FC1D9EA75700F33477 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD2DE7FA1D9EA75700F33477 /* LaunchScreen.storyboard */; };
 		BD2DE8071D9EA75700F33477 /* BrainStormerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BD2DE8061D9EA75700F33477 /* BrainStormerTests.m */; };
 		BD2DE8121D9EA75700F33477 /* BrainStormerUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = BD2DE8111D9EA75700F33477 /* BrainStormerUITests.m */; };
+		BD2DE8281D9EA8ED00F33477 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD2DE8271D9EA8ED00F33477 /* LoginViewController.m */; };
+		BD2DE82D1D9ED0BB00F33477 /* brainstorm.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BD2DE82C1D9ED0BB00F33477 /* brainstorm.jpg */; };
+		BD2DE84A1D9EE22700F33477 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD2DE8461D9EE22700F33477 /* Bolts.framework */; };
+		BD2DE84B1D9EE22700F33477 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD2DE8471D9EE22700F33477 /* FBSDKCoreKit.framework */; };
+		BD2DE84C1D9EE22700F33477 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD2DE8481D9EE22700F33477 /* FBSDKLoginKit.framework */; };
+		BD2DE84D1D9EE22700F33477 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD2DE8491D9EE22700F33477 /* FBSDKShareKit.framework */; };
+		BD55F0CA1D9FDE9E00D3D2DF /* CreatGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD55F0C91D9FDE9E00D3D2DF /* CreatGroupViewController.m */; };
+		BD55F0E01DA03F4700D3D2DF /* HowToAddViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD55F0DF1DA03F4700D3D2DF /* HowToAddViewController.m */; };
+		BD55F0E61DA0406D00D3D2DF /* GroupListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD55F0E51DA0406D00D3D2DF /* GroupListViewController.m */; };
+		BD55F0F61DA159A600D3D2DF /* InviteTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BD55F0F41DA159A600D3D2DF /* InviteTableViewCell.m */; };
+		BD55F0F71DA159A600D3D2DF /* InviteTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BD55F0F51DA159A600D3D2DF /* InviteTableViewCell.xib */; };
+		BD55F0FA1DA15B6A00D3D2DF /* InviteTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD55F0F91DA15B6A00D3D2DF /* InviteTableViewController.m */; };
+		BD55F0FC1DA1693B00D3D2DF /* invited.png in Resources */ = {isa = PBXBuildFile; fileRef = BD55F0FB1DA1693B00D3D2DF /* invited.png */; };
+		BD55F0FF1DA195F400D3D2DF /* LCCKUser.m in Sources */ = {isa = PBXBuildFile; fileRef = BD55F0FE1DA195F400D3D2DF /* LCCKUser.m */; };
+		BD55F1031DA2EE8500D3D2DF /* InvitationLetterViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BD55F1011DA2EE8500D3D2DF /* InvitationLetterViewCell.m */; };
+		BD55F1041DA2EE8500D3D2DF /* InvitationLetterViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BD55F1021DA2EE8500D3D2DF /* InvitationLetterViewCell.xib */; };
+		BD55F1071DA2EF7400D3D2DF /* no.png in Resources */ = {isa = PBXBuildFile; fileRef = BD55F1051DA2EF7400D3D2DF /* no.png */; };
+		BD55F1081DA2EF7400D3D2DF /* yes.png in Resources */ = {isa = PBXBuildFile; fileRef = BD55F1061DA2EF7400D3D2DF /* yes.png */; };
+		BD55F10A1DA3012A00D3D2DF /* bulb.png in Resources */ = {isa = PBXBuildFile; fileRef = BD55F1091DA3012A00D3D2DF /* bulb.png */; };
+		BD55F10D1DA40EF300D3D2DF /* GroupRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD55F10C1DA40EF300D3D2DF /* GroupRoomViewController.m */; };
+		BD55F1121DA4238700D3D2DF /* PresentationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD55F1111DA4238700D3D2DF /* PresentationViewController.m */; };
+		BD55F1151DA4269500D3D2DF /* BoardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD55F1141DA4269500D3D2DF /* BoardViewController.m */; };
+		BD55F1181DA4582800D3D2DF /* OptionsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD55F1171DA4582800D3D2DF /* OptionsTableViewController.m */; };
+		BD55F11A1DA4D4EE00D3D2DF /* Sticker.png in Resources */ = {isa = PBXBuildFile; fileRef = BD55F1191DA4D4EE00D3D2DF /* Sticker.png */; };
+		BD5D32871DA4FA4C00F69BAC /* locked.png in Resources */ = {isa = PBXBuildFile; fileRef = BD5D32851DA4FA4B00F69BAC /* locked.png */; };
+		BD5D32881DA4FA4C00F69BAC /* unlocked.png in Resources */ = {isa = PBXBuildFile; fileRef = BD5D32861DA4FA4B00F69BAC /* unlocked.png */; };
+		BD5D328A1DA5118100F69BAC /* addsticker.png in Resources */ = {isa = PBXBuildFile; fileRef = BD5D32891DA5118100F69BAC /* addsticker.png */; };
+		BD5D328D1DA52DAE00F69BAC /* CreateStickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD5D328C1DA52DAE00F69BAC /* CreateStickerViewController.m */; };
+		BD60D8841DA7802300540825 /* StickerMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD60D8831DA7802300540825 /* StickerMenuViewController.m */; };
+		BDED02361DA664D8003DAEE4 /* dqd_arrowhead+UIBezierPath.m in Sources */ = {isa = PBXBuildFile; fileRef = BDED02351DA664D8003DAEE4 /* dqd_arrowhead+UIBezierPath.m */; };
+		BDED02391DA670CA003DAEE4 /* Arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = BDED02371DA670CA003DAEE4 /* Arrow.png */; };
+		BDED023A1DA670CA003DAEE4 /* unarrow.png in Resources */ = {isa = PBXBuildFile; fileRef = BDED02381DA670CA003DAEE4 /* unarrow.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,8 +71,6 @@
 		BD2DE7ED1D9EA75700F33477 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		BD2DE7EF1D9EA75700F33477 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BD2DE7F01D9EA75700F33477 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		BD2DE7F21D9EA75700F33477 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		BD2DE7F31D9EA75700F33477 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		BD2DE7F61D9EA75700F33477 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		BD2DE7F81D9EA75700F33477 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BD2DE7FB1D9EA75700F33477 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -51,6 +81,59 @@
 		BD2DE80D1D9EA75700F33477 /* BrainStormerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BrainStormerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD2DE8111D9EA75700F33477 /* BrainStormerUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BrainStormerUITests.m; sourceTree = "<group>"; };
 		BD2DE8131D9EA75700F33477 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BD2DE8261D9EA8ED00F33477 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		BD2DE8271D9EA8ED00F33477 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		BD2DE82C1D9ED0BB00F33477 /* brainstorm.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brainstorm.jpg; sourceTree = "<group>"; };
+		BD2DE8461D9EE22700F33477 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
+		BD2DE8471D9EE22700F33477 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		BD2DE8481D9EE22700F33477 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		BD2DE8491D9EE22700F33477 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
+		BD55F0C81D9FDE9E00D3D2DF /* CreatGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreatGroupViewController.h; sourceTree = "<group>"; };
+		BD55F0C91D9FDE9E00D3D2DF /* CreatGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreatGroupViewController.m; sourceTree = "<group>"; };
+		BD55F0CB1DA0027800D3D2DF /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
+		BD55F0CD1DA00DAC00D3D2DF /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		BD55F0DE1DA03F4700D3D2DF /* HowToAddViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HowToAddViewController.h; sourceTree = "<group>"; };
+		BD55F0DF1DA03F4700D3D2DF /* HowToAddViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HowToAddViewController.m; sourceTree = "<group>"; };
+		BD55F0E41DA0406D00D3D2DF /* GroupListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupListViewController.h; sourceTree = "<group>"; };
+		BD55F0E51DA0406D00D3D2DF /* GroupListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupListViewController.m; sourceTree = "<group>"; };
+		BD55F0F31DA159A600D3D2DF /* InviteTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InviteTableViewCell.h; sourceTree = "<group>"; };
+		BD55F0F41DA159A600D3D2DF /* InviteTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InviteTableViewCell.m; sourceTree = "<group>"; };
+		BD55F0F51DA159A600D3D2DF /* InviteTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InviteTableViewCell.xib; sourceTree = "<group>"; };
+		BD55F0F81DA15B6A00D3D2DF /* InviteTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InviteTableViewController.h; sourceTree = "<group>"; };
+		BD55F0F91DA15B6A00D3D2DF /* InviteTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InviteTableViewController.m; sourceTree = "<group>"; };
+		BD55F0FB1DA1693B00D3D2DF /* invited.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = invited.png; sourceTree = "<group>"; };
+		BD55F0FD1DA195F400D3D2DF /* LCCKUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LCCKUser.h; sourceTree = "<group>"; };
+		BD55F0FE1DA195F400D3D2DF /* LCCKUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LCCKUser.m; sourceTree = "<group>"; };
+		BD55F1001DA2EE8500D3D2DF /* InvitationLetterViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InvitationLetterViewCell.h; sourceTree = "<group>"; };
+		BD55F1011DA2EE8500D3D2DF /* InvitationLetterViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InvitationLetterViewCell.m; sourceTree = "<group>"; };
+		BD55F1021DA2EE8500D3D2DF /* InvitationLetterViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InvitationLetterViewCell.xib; sourceTree = "<group>"; };
+		BD55F1051DA2EF7400D3D2DF /* no.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = no.png; sourceTree = "<group>"; };
+		BD55F1061DA2EF7400D3D2DF /* yes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yes.png; sourceTree = "<group>"; };
+		BD55F1091DA3012A00D3D2DF /* bulb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bulb.png; sourceTree = "<group>"; };
+		BD55F10B1DA40EF300D3D2DF /* GroupRoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupRoomViewController.h; sourceTree = "<group>"; };
+		BD55F10C1DA40EF300D3D2DF /* GroupRoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupRoomViewController.m; sourceTree = "<group>"; };
+		BD55F1101DA4238700D3D2DF /* PresentationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PresentationViewController.h; sourceTree = "<group>"; };
+		BD55F1111DA4238700D3D2DF /* PresentationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PresentationViewController.m; sourceTree = "<group>"; };
+		BD55F1131DA4269500D3D2DF /* BoardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoardViewController.h; sourceTree = "<group>"; };
+		BD55F1141DA4269500D3D2DF /* BoardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BoardViewController.m; sourceTree = "<group>"; };
+		BD55F1161DA4582800D3D2DF /* OptionsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OptionsTableViewController.h; sourceTree = "<group>"; };
+		BD55F1171DA4582800D3D2DF /* OptionsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OptionsTableViewController.m; sourceTree = "<group>"; };
+		BD55F1191DA4D4EE00D3D2DF /* Sticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Sticker.png; sourceTree = "<group>"; };
+		BD5D32851DA4FA4B00F69BAC /* locked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = locked.png; sourceTree = "<group>"; };
+		BD5D32861DA4FA4B00F69BAC /* unlocked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unlocked.png; sourceTree = "<group>"; };
+		BD5D32891DA5118100F69BAC /* addsticker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addsticker.png; sourceTree = "<group>"; };
+		BD5D328B1DA52DAE00F69BAC /* CreateStickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateStickerViewController.h; sourceTree = "<group>"; };
+		BD5D328C1DA52DAE00F69BAC /* CreateStickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateStickerViewController.m; sourceTree = "<group>"; };
+		BD60D8821DA7802300540825 /* StickerMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StickerMenuViewController.h; sourceTree = "<group>"; };
+		BD60D8831DA7802300540825 /* StickerMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StickerMenuViewController.m; sourceTree = "<group>"; };
+		BD6474A21D9FBD7100A419D1 /* MJRefresh */ = {isa = PBXFileReference; lastKnownFileType = folder; name = MJRefresh; path = "../../../Downloads/ChatKit-OC-master/ChatKit-OC/Pods/MJRefresh"; sourceTree = "<group>"; };
+		BDED02341DA664D8003DAEE4 /* dqd_arrowhead+UIBezierPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "dqd_arrowhead+UIBezierPath.h"; sourceTree = "<group>"; };
+		BDED02351DA664D8003DAEE4 /* dqd_arrowhead+UIBezierPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "dqd_arrowhead+UIBezierPath.m"; sourceTree = "<group>"; };
+		BDED02371DA670CA003DAEE4 /* Arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Arrow.png; sourceTree = "<group>"; };
+		BDED02381DA670CA003DAEE4 /* unarrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unarrow.png; sourceTree = "<group>"; };
+		BFF344B3DB490AF49DA0322E /* Pods-BrainStormer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BrainStormer.release.xcconfig"; path = "Pods/Target Support Files/Pods-BrainStormer/Pods-BrainStormer.release.xcconfig"; sourceTree = "<group>"; };
+		D4F493E97EF786D3E9D444C1 /* libPods-BrainStormer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BrainStormer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EBD768C80E32182B6A5523EB /* Pods-BrainStormer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BrainStormer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BrainStormer/Pods-BrainStormer.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +141,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD2DE84D1D9EE22700F33477 /* FBSDKShareKit.framework in Frameworks */,
+				BD2DE84A1D9EE22700F33477 /* Bolts.framework in Frameworks */,
+				BD2DE84B1D9EE22700F33477 /* FBSDKCoreKit.framework in Frameworks */,
+				BD2DE84C1D9EE22700F33477 /* FBSDKLoginKit.framework in Frameworks */,
+				991531F289B8C02852E4107D /* libPods-BrainStormer.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +166,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		52CEB7A314BC2898DB954215 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BD55F0CD1DA00DAC00D3D2DF /* Security.framework */,
+				BD55F0CB1DA0027800D3D2DF /* Photos.framework */,
+				BD6474A21D9FBD7100A419D1 /* MJRefresh */,
+				D4F493E97EF786D3E9D444C1 /* libPods-BrainStormer.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		BD2DE7E01D9EA75700F33477 = {
 			isa = PBXGroup;
 			children = (
@@ -85,6 +184,8 @@
 				BD2DE8051D9EA75700F33477 /* BrainStormerTests */,
 				BD2DE8101D9EA75700F33477 /* BrainStormerUITests */,
 				BD2DE7EA1D9EA75700F33477 /* Products */,
+				52CEB7A314BC2898DB954215 /* Frameworks */,
+				CDEAB60D51A844943D65FC22 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -103,12 +204,18 @@
 			children = (
 				BD2DE7EF1D9EA75700F33477 /* AppDelegate.h */,
 				BD2DE7F01D9EA75700F33477 /* AppDelegate.m */,
-				BD2DE7F21D9EA75700F33477 /* ViewController.h */,
-				BD2DE7F31D9EA75700F33477 /* ViewController.m */,
-				BD2DE7F51D9EA75700F33477 /* Main.storyboard */,
+				BD2DE8261D9EA8ED00F33477 /* LoginViewController.h */,
+				BD2DE8271D9EA8ED00F33477 /* LoginViewController.m */,
+				BD55F0E41DA0406D00D3D2DF /* GroupListViewController.h */,
+				BD55F0E51DA0406D00D3D2DF /* GroupListViewController.m */,
+				BD55F10E1DA40F0800D3D2DF /* AddGroupControllers */,
+				BD55F10F1DA40F2300D3D2DF /* GroupRoomControllers */,
 				BD2DE7F81D9EA75700F33477 /* Assets.xcassets */,
+				BD2DE7F51D9EA75700F33477 /* Main.storyboard */,
 				BD2DE7FA1D9EA75700F33477 /* LaunchScreen.storyboard */,
 				BD2DE7FD1D9EA75700F33477 /* Info.plist */,
+				BD2DE82B1D9ED0A600F33477 /* Images */,
+				BD2DE81F1D9EA76600F33477 /* Frameworks */,
 				BD2DE7EC1D9EA75700F33477 /* Supporting Files */,
 			);
 			path = BrainStormer;
@@ -117,7 +224,17 @@
 		BD2DE7EC1D9EA75700F33477 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				BD55F0FD1DA195F400D3D2DF /* LCCKUser.h */,
+				BD55F0FE1DA195F400D3D2DF /* LCCKUser.m */,
 				BD2DE7ED1D9EA75700F33477 /* main.m */,
+				BD55F0F31DA159A600D3D2DF /* InviteTableViewCell.h */,
+				BD55F0F41DA159A600D3D2DF /* InviteTableViewCell.m */,
+				BD55F0F51DA159A600D3D2DF /* InviteTableViewCell.xib */,
+				BD55F1001DA2EE8500D3D2DF /* InvitationLetterViewCell.h */,
+				BD55F1011DA2EE8500D3D2DF /* InvitationLetterViewCell.m */,
+				BD55F1021DA2EE8500D3D2DF /* InvitationLetterViewCell.xib */,
+				BDED02341DA664D8003DAEE4 /* dqd_arrowhead+UIBezierPath.h */,
+				BDED02351DA664D8003DAEE4 /* dqd_arrowhead+UIBezierPath.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -140,6 +257,76 @@
 			path = BrainStormerUITests;
 			sourceTree = "<group>";
 		};
+		BD2DE81F1D9EA76600F33477 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BD2DE8461D9EE22700F33477 /* Bolts.framework */,
+				BD2DE8471D9EE22700F33477 /* FBSDKCoreKit.framework */,
+				BD2DE8481D9EE22700F33477 /* FBSDKLoginKit.framework */,
+				BD2DE8491D9EE22700F33477 /* FBSDKShareKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BD2DE82B1D9ED0A600F33477 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				BDED02371DA670CA003DAEE4 /* Arrow.png */,
+				BDED02381DA670CA003DAEE4 /* unarrow.png */,
+				BD5D32891DA5118100F69BAC /* addsticker.png */,
+				BD5D32851DA4FA4B00F69BAC /* locked.png */,
+				BD5D32861DA4FA4B00F69BAC /* unlocked.png */,
+				BD55F1191DA4D4EE00D3D2DF /* Sticker.png */,
+				BD55F1091DA3012A00D3D2DF /* bulb.png */,
+				BD55F1051DA2EF7400D3D2DF /* no.png */,
+				BD55F1061DA2EF7400D3D2DF /* yes.png */,
+				BD55F0FB1DA1693B00D3D2DF /* invited.png */,
+				BD2DE82C1D9ED0BB00F33477 /* brainstorm.jpg */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
+		BD55F10E1DA40F0800D3D2DF /* AddGroupControllers */ = {
+			isa = PBXGroup;
+			children = (
+				BD55F0DE1DA03F4700D3D2DF /* HowToAddViewController.h */,
+				BD55F0DF1DA03F4700D3D2DF /* HowToAddViewController.m */,
+				BD55F0C81D9FDE9E00D3D2DF /* CreatGroupViewController.h */,
+				BD55F0C91D9FDE9E00D3D2DF /* CreatGroupViewController.m */,
+				BD55F0F81DA15B6A00D3D2DF /* InviteTableViewController.h */,
+				BD55F0F91DA15B6A00D3D2DF /* InviteTableViewController.m */,
+			);
+			name = AddGroupControllers;
+			sourceTree = "<group>";
+		};
+		BD55F10F1DA40F2300D3D2DF /* GroupRoomControllers */ = {
+			isa = PBXGroup;
+			children = (
+				BD55F10B1DA40EF300D3D2DF /* GroupRoomViewController.h */,
+				BD55F10C1DA40EF300D3D2DF /* GroupRoomViewController.m */,
+				BD55F1161DA4582800D3D2DF /* OptionsTableViewController.h */,
+				BD55F1171DA4582800D3D2DF /* OptionsTableViewController.m */,
+				BD55F1101DA4238700D3D2DF /* PresentationViewController.h */,
+				BD55F1111DA4238700D3D2DF /* PresentationViewController.m */,
+				BD55F1131DA4269500D3D2DF /* BoardViewController.h */,
+				BD55F1141DA4269500D3D2DF /* BoardViewController.m */,
+				BD5D328B1DA52DAE00F69BAC /* CreateStickerViewController.h */,
+				BD5D328C1DA52DAE00F69BAC /* CreateStickerViewController.m */,
+				BD60D8821DA7802300540825 /* StickerMenuViewController.h */,
+				BD60D8831DA7802300540825 /* StickerMenuViewController.m */,
+			);
+			name = GroupRoomControllers;
+			sourceTree = "<group>";
+		};
+		CDEAB60D51A844943D65FC22 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				EBD768C80E32182B6A5523EB /* Pods-BrainStormer.debug.xcconfig */,
+				BFF344B3DB490AF49DA0322E /* Pods-BrainStormer.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -147,9 +334,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = BD2DE8161D9EA75700F33477 /* Build configuration list for PBXNativeTarget "BrainStormer" */;
 			buildPhases = (
+				18361B2609F8F497F1C2532F /* [CP] Check Pods Manifest.lock */,
 				BD2DE7E51D9EA75700F33477 /* Sources */,
 				BD2DE7E61D9EA75700F33477 /* Frameworks */,
 				BD2DE7E71D9EA75700F33477 /* Resources */,
+				8511CE43135B1D9C47FBFC65 /* [CP] Embed Pods Frameworks */,
+				9F23A3D771C478BB277769A6 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -207,6 +397,7 @@
 				TargetAttributes = {
 					BD2DE7E81D9EA75700F33477 = {
 						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = H932E53VEH;
 						ProvisioningStyle = Automatic;
 					};
 					BD2DE8011D9EA75700F33477 = {
@@ -247,7 +438,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				BD2DE7FC1D9EA75700F33477 /* LaunchScreen.storyboard in Resources */,
+				BD55F0F71DA159A600D3D2DF /* InviteTableViewCell.xib in Resources */,
+				BD55F11A1DA4D4EE00D3D2DF /* Sticker.png in Resources */,
+				BD5D32871DA4FA4C00F69BAC /* locked.png in Resources */,
 				BD2DE7F91D9EA75700F33477 /* Assets.xcassets in Resources */,
+				BD55F0FC1DA1693B00D3D2DF /* invited.png in Resources */,
+				BD55F10A1DA3012A00D3D2DF /* bulb.png in Resources */,
+				BD5D328A1DA5118100F69BAC /* addsticker.png in Resources */,
+				BD5D32881DA4FA4C00F69BAC /* unlocked.png in Resources */,
+				BD55F1081DA2EF7400D3D2DF /* yes.png in Resources */,
+				BD55F1041DA2EE8500D3D2DF /* InvitationLetterViewCell.xib in Resources */,
+				BD55F1071DA2EF7400D3D2DF /* no.png in Resources */,
+				BDED023A1DA670CA003DAEE4 /* unarrow.png in Resources */,
+				BD2DE82D1D9ED0BB00F33477 /* brainstorm.jpg in Resources */,
+				BDED02391DA670CA003DAEE4 /* Arrow.png in Resources */,
 				BD2DE7F71D9EA75700F33477 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -268,14 +472,76 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		18361B2609F8F497F1C2532F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		8511CE43135B1D9C47FBFC65 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BrainStormer/Pods-BrainStormer-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9F23A3D771C478BB277769A6 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BrainStormer/Pods-BrainStormer-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		BD2DE7E51D9EA75700F33477 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BD2DE7F41D9EA75700F33477 /* ViewController.m in Sources */,
+				BD2DE8281D9EA8ED00F33477 /* LoginViewController.m in Sources */,
+				BD55F0CA1D9FDE9E00D3D2DF /* CreatGroupViewController.m in Sources */,
+				BD55F1121DA4238700D3D2DF /* PresentationViewController.m in Sources */,
+				BDED02361DA664D8003DAEE4 /* dqd_arrowhead+UIBezierPath.m in Sources */,
+				BD55F0FF1DA195F400D3D2DF /* LCCKUser.m in Sources */,
 				BD2DE7F11D9EA75700F33477 /* AppDelegate.m in Sources */,
+				BD55F0E01DA03F4700D3D2DF /* HowToAddViewController.m in Sources */,
+				BD55F10D1DA40EF300D3D2DF /* GroupRoomViewController.m in Sources */,
+				BD55F0FA1DA15B6A00D3D2DF /* InviteTableViewController.m in Sources */,
+				BD55F0E61DA0406D00D3D2DF /* GroupListViewController.m in Sources */,
+				BD55F1031DA2EE8500D3D2DF /* InvitationLetterViewCell.m in Sources */,
+				BD55F1181DA4582800D3D2DF /* OptionsTableViewController.m in Sources */,
+				BD5D328D1DA52DAE00F69BAC /* CreateStickerViewController.m in Sources */,
+				BD55F1151DA4269500D3D2DF /* BoardViewController.m in Sources */,
 				BD2DE7EE1D9EA75700F33477 /* main.m in Sources */,
+				BD55F0F61DA159A600D3D2DF /* InviteTableViewCell.m in Sources */,
+				BD60D8841DA7802300540825 /* StickerMenuViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -348,6 +614,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -396,6 +663,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -422,9 +690,16 @@
 		};
 		BD2DE8171D9EA75700F33477 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EBD768C80E32182B6A5523EB /* Pods-BrainStormer.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = H932E53VEH;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/BrainStormer",
+				);
 				INFOPLIST_FILE = BrainStormer/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Lun.BrainStormer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -433,9 +708,16 @@
 		};
 		BD2DE8181D9EA75700F33477 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BFF344B3DB490AF49DA0322E /* Pods-BrainStormer.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = H932E53VEH;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/BrainStormer",
+				);
 				INFOPLIST_FILE = BrainStormer/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Lun.BrainStormer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -507,6 +789,7 @@
 				BD2DE8181D9EA75700F33477 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		BD2DE8191D9EA75700F33477 /* Build configuration list for PBXNativeTarget "BrainStormerTests" */ = {
 			isa = XCConfigurationList;
@@ -515,6 +798,7 @@
 				BD2DE81B1D9EA75700F33477 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		BD2DE81C1D9EA75700F33477 /* Build configuration list for PBXNativeTarget "BrainStormerUITests" */ = {
 			isa = XCConfigurationList;
@@ -523,6 +807,7 @@
 				BD2DE81E1D9EA75700F33477 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
