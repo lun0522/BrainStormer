@@ -7,22 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <AVOSCloud/AVOSCloud.h>
-#import <AVUser.h>
-#import <ChatKit/LCChatKit.h>
-#import "HowToAddViewController.h"
-#import "GroupRoomViewController.h"
-#import "LCCKUser.h"
 
-@interface GroupListViewController : UITableViewController {
-    NSMutableArray *users;
-    NSMutableArray *JoinedTopic;
-    NSMutableArray *JoinedCreator;
-    NSMutableArray *JoinedGroupId;
-    NSMutableArray *InvitedTopic;
-    NSMutableArray *Inviter;
-    NSMutableArray *InvitedGroupId;
-    NSUserDefaults *userDefaults;
-}
+@interface GroupListViewController : UITableViewController <UIPopoverPresentationControllerDelegate>
 
 @end

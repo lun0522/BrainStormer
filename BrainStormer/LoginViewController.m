@@ -6,10 +6,10 @@
 //  Copyright © 2016年 Lun. All rights reserved.
 //
 
-#import "LoginViewController.h"
 #import <AVOSCloud/AVOSCloud.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import "LoginViewController.h"
 
 @interface LoginViewController ()
 
@@ -20,14 +20,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self SetButton];
-    
-    // Clear user defaults
-//    NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
-//    [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
-}
-
-- (void)SetButton {
     self.ShortCutButton.layer.cornerRadius = 10.0f;
     self.ShortCutButton.layer.borderWidth = 1.0f;
     self.ShortCutButton.tintColor = [UIColor blackColor];
@@ -106,11 +98,6 @@
     [alertController addAction: [UIAlertAction actionWithTitle: @"Cancel" style: UIAlertActionStyleCancel handler:nil]];
     
     [self presentViewController: alertController animated: YES completion: nil];
-}
-
-- (UIImage *)GetImageFromURL:(NSString *)imageURL {
-    NSLog(@"Downloading image");
-    return [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:imageURL]]];
 }
 
 - (void)didReceiveMemoryWarning {

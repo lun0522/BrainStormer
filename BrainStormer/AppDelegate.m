@@ -6,24 +6,21 @@
 //  Copyright © 2016年 Lun. All rights reserved.
 //
 
-#import "AppDelegate.h"
-#import <AVOSCloud/AVOSCloud.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import "AppDelegate.h"
+#import "AVOSCloudUtils.h"
+#import "ChatKitUtils.h"
 
 @interface AppDelegate ()
 
 @end
 
-static NSString *const BSM_AVOSCloudAppID = @"SNNDXwGf0dAJrqbEON4M4Ry0-MdYXbMMI";
-static NSString *const BSM_AVOSCloudAppKey = @"taVP3U4xG0JyFp5WM58ckSMA";
-
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    [AVOSCloud setServiceRegion:AVServiceRegionUS];
-    [AVOSCloud setApplicationId:BSM_AVOSCloudAppID
-                      clientKey:BSM_AVOSCloudAppKey];
+    [AVOSCloudUtils applicationDidfinishLaunch];
+    [ChatKitUtils applicationDidfinishLaunch];
     [[FBSDKApplicationDelegate sharedInstance] application:application
                              didFinishLaunchingWithOptions:launchOptions];
     
