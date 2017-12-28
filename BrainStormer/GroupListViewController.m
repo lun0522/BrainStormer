@@ -13,7 +13,9 @@
 #import "HowToAddViewController.h"
 #import "GroupRoomViewController.h"
 
-@interface GroupListViewController ()
+@interface GroupListViewController () {
+    BrainStormUser *currentUser;
+}
 
 @end
 
@@ -24,15 +26,22 @@
     
     [self setNaviItem];
     [self setRefresher];
+    [self setCurrentUser];
 }
 
 - (void)setNaviItem {
     self.title = @"Groups";
     
-    UIBarButtonItem *LogoutButton = [[UIBarButtonItem alloc] initWithTitle:@"➖" style:UIBarButtonItemStylePlain target:self action:@selector(Logout:)];
+    UIBarButtonItem *LogoutButton = [[UIBarButtonItem alloc] initWithTitle:@"➖"
+                                                                     style:UIBarButtonItemStylePlain
+                                                                    target:self
+                                                                    action:@selector(Logout:)];
     self.navigationItem.leftBarButtonItem = LogoutButton;
     
-    UIBarButtonItem *AddButton = [[UIBarButtonItem alloc] initWithTitle:@"➕" style:UIBarButtonItemStylePlain target:self action:@selector(AddGroup:)];
+    UIBarButtonItem *AddButton = [[UIBarButtonItem alloc] initWithTitle:@"➕"
+                                                                  style:UIBarButtonItemStylePlain
+                                                                 target:self
+                                                                 action:@selector(AddGroup:)];
     self.navigationItem.rightBarButtonItem = AddButton;
 }
 
@@ -42,6 +51,10 @@
     [self.refreshControl addTarget:self
                             action:@selector(controlEventValueChanged:)
                   forControlEvents:UIControlEventValueChanged];
+}
+
+- (void)setCurrentUser {
+    currentUser = [BrainStormUser currentUser];
 }
 
 - (void)GroupCreated:(NSNotification *) notification {
@@ -104,21 +117,19 @@
     static NSString * CellIdentifier = @"CellIdentifier";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
-    BrainStormUser *currentUser = [BrainStormUser currentUser];
-    
-    if (row < currentUser.getJoinedGroupsList.count && currentUser.getJoinedGroupsList.count != 0) {
+    if (row < currentUser.joinedGroupsList.count && currentUser.joinedGroupsList.count != 0) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
         cell.userInteractionEnabled = YES;
         cell.imageView.image = [UIImage imageNamed:@"bulb.png"];
-        cell.textLabel.text = currentUser.getJoinedGroupsList[row].topic;
-        cell.detailTextLabel.text = [@"Created by " stringByAppendingString:currentUser.getJoinedGroupsList[row].creatorName];
-    }else if (row < currentUser.getJoinedGroupsList.count + currentUser.getInvitedGroupsList.count && currentUser.getInvitedGroupsList.count != 0) {
+        cell.textLabel.text = currentUser.joinedGroupsList[row].topic;
+        cell.detailTextLabel.text = [@"Created by " stringByAppendingString:currentUser.joinedGroupsList[row].creatorName];
+    }else if (row < currentUser.joinedGroupsList.count + currentUser.invitedGroupsList.count && currentUser.invitedGroupsList.count != 0) {
         cell = [[[NSBundle mainBundle] loadNibNamed:@"InvitationLetterViewCell" owner:nil options:nil] firstObject];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         UILabel *joinedTopicLabel = (UILabel *)[cell viewWithTag:1];
-        joinedTopicLabel.text = [@"【Invitation】" stringByAppendingString:currentUser.getInvitedGroupsList[row - currentUser.getJoinedGroupsList.count].topic];
+        joinedTopicLabel.text = [@"【Invitation】" stringByAppendingString:currentUser.invitedGroupsList[row - currentUser.joinedGroupsList.count].topic];
         UILabel *joinedCreatorLabel = (UILabel *)[cell viewWithTag:2];
-        joinedCreatorLabel.text = [@"Created by " stringByAppendingString:currentUser.getInvitedGroupsList[row - currentUser.getJoinedGroupsList.count].creatorName];
+        joinedCreatorLabel.text = [@"Created by " stringByAppendingString:currentUser.invitedGroupsList[row - currentUser.joinedGroupsList.count].creatorName];
         UIButton *YesButton = (UIButton *)[cell viewWithTag:3];
 //        UIButton *NoButton = (UIButton *)[cell viewWithTag:4];
 //        UIButton *MoreInfo = (UIButton *)[cell viewWithTag:5];
@@ -134,10 +145,8 @@
 }
 
 - (void)AgreeToJoin:(UIButton *)TapYes {
-    BrainStormUser *currentUser = [BrainStormUser currentUser];
-    
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Agree to join in this group?"
-                                                                             message:[@"Topic: " stringByAppendingString:currentUser.getInvitedGroupsList[TapYes.tag - currentUser.getJoinedGroupsList.count].topic]
+                                                                             message:[@"Topic: " stringByAppendingString:currentUser.invitedGroupsList[TapYes.tag - currentUser.joinedGroupsList.count].topic]
                                                                       preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Yes!" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         // Todo: delete invitations; renew involved list (cloud and singleton); renew grouplist; get into the group
@@ -145,7 +154,7 @@
         // Delete invitations
         AVQuery *query = [AVQuery queryWithClassName:@"Invitation"];
         [query whereKey:@"InvitedId" equalTo:currentUser.objectId];
-        [query whereKey:@"InvitedToGroup" equalTo:currentUser.getInvitedGroupsList[TapYes.tag - currentUser.getJoinedGroupsList.count].groupId];
+        [query whereKey:@"InvitedToGroup" equalTo:currentUser.invitedGroupsList[TapYes.tag - currentUser.joinedGroupsList.count].groupId];
         [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
             for (NSInteger i = 0; i < [objects count]; i++) {
                 [[objects objectAtIndex:i] deleteInBackground];
@@ -154,7 +163,7 @@
             // renew involved list (cloud)
             NSArray *PreviousInvolved = [currentUser objectForKey:@"GroupInvolved"];
             NSMutableArray *NewInvolved = [NSMutableArray arrayWithArray:PreviousInvolved];
-            [NewInvolved addObject:currentUser.getInvitedGroupsList[TapYes.tag - currentUser.getJoinedGroupsList.count].groupId];
+            [NewInvolved addObject:currentUser.invitedGroupsList[TapYes.tag - currentUser.joinedGroupsList.count].groupId];
             AVObject *renew = [AVObject objectWithClassName:@"_User" objectId:currentUser.objectId];
             [renew setObject:NewInvolved forKey:@"GroupInvolved"];
             [renew saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
@@ -170,7 +179,7 @@
                             [currentUser setObject:[object objectForKey:@"GroupInvolved"] forKey:@"GroupInvolved"];
 
                             // get into the group
-                            LCCKConversationViewController *conversationViewController = [[LCCKConversationViewController alloc] initWithConversationId:currentUser.getInvitedGroupsList[TapYes.tag - currentUser.getJoinedGroupsList.count].groupId];
+                            LCCKConversationViewController *conversationViewController = [[LCCKConversationViewController alloc] initWithConversationId:currentUser.invitedGroupsList[TapYes.tag - currentUser.joinedGroupsList.count].groupId];
                             conversationViewController.enableAutoJoin = YES;
                             [self.navigationController pushViewController:conversationViewController animated:YES];
                             
@@ -194,11 +203,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSUInteger row = [indexPath row];
-    BrainStormUser *currentUser = [BrainStormUser currentUser];
     
-    if (row < currentUser.getJoinedGroupsList.count) {
+    if (row < currentUser.joinedGroupsList.count) {
         GroupRoomViewController *GroupRoom = [[GroupRoomViewController alloc] init];
-        GroupRoom.GroupId = currentUser.getJoinedGroupsList[row].groupId;
+        GroupRoom.GroupId = currentUser.joinedGroupsList[row].groupId;
         [self.navigationController pushViewController:GroupRoom animated:YES];
     }
 }
@@ -212,8 +220,6 @@
 }
 
 - (void)RefreshData {
-    BrainStormUser *currentUser = [BrainStormUser currentUser];
-    
     [currentUser clearJoinedGroups];
     [currentUser clearInvitedGroups];
     
@@ -223,9 +229,9 @@
         for (NSInteger i = 0; i < [GroupInvolved count]; i++) {
             AVQuery *queryinvolved = [AVQuery queryWithClassName:@"_Conversation"];
             [queryinvolved getObjectInBackgroundWithId:[GroupInvolved objectAtIndex:i] block:^(AVObject *object, NSError *error) {
-                [currentUser addJoinedGroup:[[BrainStormGroup alloc] initWithGroupId:GroupInvolved[i]
-                                                                               topic:object[@"topic"]
-                                                                         creatorName:object[@"creatorName"]]];
+                [currentUser addJoinedGroup:[BrainStormGroup groupWithId:GroupInvolved[i]
+                                                                   topic:object[@"topic"]
+                                                             creatorName:object[@"creatorName"]]];
                 if (i == [GroupInvolved count]-1) {
                     
                     AVQuery *queryinvitation = [AVQuery queryWithClassName:@"Invitation"];
@@ -233,9 +239,9 @@
                     [queryinvitation orderByDescending:@"createdAt"];
                     [queryinvitation findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
                         for (NSInteger j = 0; j < [objects count]; j++) {
-                            [currentUser addInvitedGroup:[[BrainStormGroup alloc] initWithGroupId:objects[j][@"groupId"]
-                                                                                            topic:objects[j][@"topic"]
-                                                                                      creatorName:objects[j][@"inviterName"]]];
+                            [currentUser addInvitedGroup:[BrainStormGroup groupWithId:objects[j][@"groupId"]
+                                                                                topic:objects[j][@"topic"]
+                                                                          creatorName:objects[j][@"inviterName"]]];
                         }
                         
                         [self.tableView reloadData];
@@ -249,9 +255,9 @@
         [queryinvitation orderByDescending:@"createdAt"];
         [queryinvitation findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
             for (NSInteger j = 0; j < [objects count]; j++) {
-                [currentUser addInvitedGroup:[[BrainStormGroup alloc] initWithGroupId:objects[j][@"groupId"]
-                                                                                topic:objects[j][@"topic"]
-                                                                          creatorName:objects[j][@"inviterName"]]];
+                [currentUser addInvitedGroup:[BrainStormGroup groupWithId:objects[j][@"groupId"]
+                                                                    topic:objects[j][@"topic"]
+                                                              creatorName:objects[j][@"inviterName"]]];
             }
             
             [self.tableView reloadData];

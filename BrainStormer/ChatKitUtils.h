@@ -11,6 +11,6 @@
 @interface ChatKitUtils : NSObject
 
 + (void)applicationDidfinishLaunch;
-+ (void)userDidLoginWithId:(NSString *)uid;
++ (void)userDidLoginWithId:(NSString * _Nonnull)userId;
 
 @end

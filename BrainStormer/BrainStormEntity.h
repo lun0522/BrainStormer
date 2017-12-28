@@ -7,31 +7,33 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <AVOSCloud.h>
 
 @interface BrainStormGroup : NSObject
 
-@property (nonatomic, copy, readonly) NSString *groupId;
-@property (nonatomic, copy, readonly) NSString *topic;
-@property (nonatomic, copy, readonly) NSString *creatorName;
+@property (nonatomic, copy, readonly) NSString * _Nonnull groupId;
+@property (nonatomic, copy, readonly) NSString * _Nonnull topic;
+@property (nonatomic, copy, readonly) NSString * _Nonnull creatorName;
 
-- (instancetype)initWithGroupId:(NSString *)groupId
-                          topic:(NSString *)topic
-                    creatorName:(NSString *)creatorName;
+- (instancetype _Nonnull)init NS_UNAVAILABLE;
++ (BrainStormGroup * _Nonnull)groupWithId:(NSString * _Nonnull)groupId
+                                    topic:(NSString * _Nonnull)topic
+                              creatorName:(NSString * _Nonnull)creatorName;
 
 @end
 
 @interface BrainStormUser : AVUser
 
-+ (instancetype)logInWithUsername:(NSString *)username
-                         password:(NSString *)password
-                            error:(NSError **)error;
+- (instancetype _Nonnull)init NS_UNAVAILABLE;
++ (BrainStormUser * _Nullable)userWithName:(NSString * _Nonnull)username
+                                  password:(NSString * _Nonnull)password;
 
-- (NSMutableArray<BrainStormGroup *> *)getJoinedGroupsList;
-- (void)addJoinedGroup:(BrainStormGroup *)group;
+- (NSArray<BrainStormGroup *> * _Nonnull)joinedGroupsList;
+- (void)addJoinedGroup:(BrainStormGroup * _Nonnull)group;
 - (void)clearJoinedGroups;
 
-- (NSMutableArray<BrainStormGroup *> *)getInvitedGroupsList;
-- (void)addInvitedGroup:(BrainStormGroup *)group;
+- (NSArray<BrainStormGroup *> * _Nonnull)invitedGroupsList;
+- (void)addInvitedGroup:(BrainStormGroup * _Nonnull)group;
 - (void)clearInvitedGroups;
 
 @end

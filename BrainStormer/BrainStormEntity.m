@@ -6,11 +6,18 @@
 //  Copyright © 2017年 Lun. All rights reserved.
 //
 
-#import <AVOSCloud.h>
 #import "ChatKitUtils.h"
 #import "BrainStormEntity.h"
 
 @implementation BrainStormGroup
+
++ (BrainStormGroup * _Nonnull)groupWithId:(NSString * _Nonnull)groupId
+                                    topic:(NSString * _Nonnull)topic
+                              creatorName:(NSString * _Nonnull)creatorName {
+    return [[BrainStormGroup alloc] initWithGroupId:groupId
+                                              topic:topic
+                                        creatorName:creatorName];
+}
 
 - (instancetype)initWithGroupId:(NSString *)groupId
                           topic:(NSString *)topic
@@ -26,19 +33,24 @@
 @end
 
 @implementation BrainStormUser {
-    NSMutableArray *m_JoinedGroups;
-    NSMutableArray *m_InvitedGroups;
+    NSMutableArray *_joinedGroups;
+    NSMutableArray *_invitedGroups;
 }
 
-+ (instancetype)logInWithUsername:(NSString *)username
-                         password:(NSString *)password
-                            error:(NSError **)error {
-    BrainStormUser *user = [super logInWithUsername:username password:password error:error];
++ (BrainStormUser * _Nullable)userWithName:(NSString * _Nonnull)username
+                                  password:(NSString * _Nonnull)password {
+    NSError *error;
+    BrainStormUser *user = [self logInWithUsername:username
+                                          password:password
+                                             error:&error];
     if (!error) {
         [self getAvatar];
         [ChatKitUtils userDidLoginWithId:BrainStormUser.currentUser.objectId];
+        return user;
+    } else {
+        NSLog(@"Failed to login: %@", error.localizedDescription);
+        return nil;
     }
-    return user;
 }
 
 + (void)getAvatar {
@@ -50,14 +62,14 @@
     BOOL isDownloaded = [[NSFileManager defaultManager] fileExistsAtPath:uniquePath];
     if (!isDownloaded) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            UIImage *avatar = [self getImageFromURL:avatarURL];
+            UIImage *avatar = [self downloadImageFromURL:avatarURL];
             NSString * documentsDirectoryPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
             [self saveImage:avatar withFileName:File ofType:@"jpg" inDirectory:documentsDirectoryPath];
         });
     }
 }
 
-+ (UIImage *)getImageFromURL:(NSString *)imageURL {
++ (UIImage *)downloadImageFromURL:(NSString *)imageURL {
     NSLog(@"Downloading image");
     return [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:imageURL]]];
 }
@@ -73,34 +85,34 @@
     }
 }
 
-- (NSMutableArray<BrainStormGroup *> *)getJoinedGroupsList {
-    if (!m_JoinedGroups) {
-        m_JoinedGroups = [[NSMutableArray alloc] init];
+- (NSArray<BrainStormGroup *> * _Nonnull)joinedGroupsList {
+    if (!_joinedGroups) {
+        _joinedGroups = [[NSMutableArray alloc] init];
     }
-    return m_JoinedGroups;
+    return [_joinedGroups copy];
 }
 
-- (void)addJoinedGroup:(BrainStormGroup *)group {
-    [m_JoinedGroups addObject:group];
+- (void)addJoinedGroup:(BrainStormGroup * _Nonnull)group {
+    [_joinedGroups addObject:group];
 }
 
 - (void)clearJoinedGroups {
-    [m_JoinedGroups removeAllObjects];
+    [_joinedGroups removeAllObjects];
 }
 
-- (NSMutableArray<BrainStormGroup *> *)getInvitedGroupsList {
-    if (!m_InvitedGroups) {
-        m_InvitedGroups = [[NSMutableArray alloc] init];
+- (NSArray<BrainStormGroup *> * _Nonnull)invitedGroupsList {
+    if (!_invitedGroups) {
+        _invitedGroups = [[NSMutableArray alloc] init];
     }
-    return m_InvitedGroups;
+    return [_invitedGroups copy];
 }
 
-- (void)addInvitedGroup:(BrainStormGroup *)group {
-    [m_InvitedGroups addObject:group];
+- (void)addInvitedGroup:(BrainStormGroup * _Nonnull)group {
+    [_invitedGroups addObject:group];
 }
 
 - (void)clearInvitedGroups {
-    [m_InvitedGroups removeAllObjects];
+    [_invitedGroups removeAllObjects];
 }
 
 @end

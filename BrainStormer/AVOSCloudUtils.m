@@ -9,7 +9,6 @@
 #import <AVOSCloud.h>
 #import <AVIMClient.h>
 #import "BrainStormEntity.h"
-#import "ChatKitUtils.h"
 #import "AVOSCloudUtils.h"
 
 @implementation AVOSCloudUtils
@@ -24,9 +23,10 @@ NSString *const BSM_AVOSCloudAppKey = @"taVP3U4xG0JyFp5WM58ckSMA";
     [AVIMClient setTimeoutIntervalInSeconds:20];
 }
 
-+ (void)getObjectInBackgroundWithClassName:(NSString *)className
-                                  objectId:(NSString *)objectId
-                                completion:(void (^)(AVObject *object, NSError *error))completion{
++ (void)getObjectInBackgroundWithClassName:(NSString * _Nonnull)className
+                                  objectId:(NSString * _Nonnull)objectId
+                                completion:(void (^ _Nullable)(AVObject * _Nullable object,
+                                                               NSError * _Nullable error))completion {
     AVQuery *query = [AVQuery queryWithClassName:className];
     [query getObjectInBackgroundWithId:objectId
                                  block:^(AVObject * _Nullable object, NSError * _Nullable error) {

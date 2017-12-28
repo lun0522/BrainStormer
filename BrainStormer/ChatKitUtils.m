@@ -18,16 +18,12 @@
     [LCCKInputViewPluginTakePhoto registerSubclass];
     [LCCKInputViewPluginPickImage registerSubclass];
     [LCCKInputViewPluginLocation registerSubclass];
-}
-
-+ (void)userDidLoginWithId:(NSString *)uid {
     [self setAppInfo];
     [self setFetchProfiles];
     [self setConversationInvalidedHandler];
     [self setLoadLatestMessages];
     [self setLongPressMessage];
     [self setForceReconect];
-    [self openChatKitWithId:uid];
 }
 
 + (void)setAppInfo {
@@ -46,8 +42,8 @@
             NSInteger code = 0;
             NSString *errorReasonText = @"User ids is nil";
             NSDictionary *errorInfo = @{
-                                        @"code":@(code),
-                                        NSLocalizedDescriptionKey : errorReasonText,
+                                        @"code": @(code),
+                                        NSLocalizedDescriptionKey: errorReasonText,
                                         };
             NSError *error = [NSError errorWithDomain:NSStringFromClass([self class])
                                                  code:code
@@ -56,7 +52,7 @@
             return;
         }
         
-        // Query for these users
+        // Query for users
         NSMutableArray *targetUsers = [[NSMutableArray alloc] init];
         dispatch_queue_t queue = dispatch_queue_create("com.lun.brainstormer.downloadqueue", DISPATCH_QUEUE_CONCURRENT);
         dispatch_semaphore_t semaphore = dispatch_semaphore_create(userIds.count);
@@ -65,9 +61,10 @@
                 [AVOSCloudUtils getObjectInBackgroundWithClassName:@"_User"
                                                           objectId:uid
                                                         completion:^(AVObject *object, NSError *error) {
-                                                            LCCKUser *user = [LCCKUser userWithUserId:uid
-                                                                                                 name:object[@"username"]
-                                                                                            avatarURL:object[@"avatarURL"]];
+                                                            LCCKUser *user =
+                                                            [LCCKUser userWithUserId:uid
+                                                                                name:object[@"username"]
+                                                                           avatarURL:object[@"avatarURL"]];
                                                             [targetUsers addObject:user];
                                                             dispatch_semaphore_signal(semaphore);
                                                         }];
@@ -94,25 +91,24 @@
 
 + (void)setLongPressMessage {
     [[LCChatKit sharedInstance] setLongPressMessageBlock:^NSArray<UIMenuItem *> *(LCCKMessage *message, NSDictionary *userInfo) {
+        if (message.mediaType != kAVIMMessageMediaTypeText) return nil;
+        
         // Menu and corresponding operation
-        LCCKMenuItem *copyItem = [[LCCKMenuItem alloc] initWithTitle:LCCKLocalizedStrings(@"copy")
-                                                               block:^{
-                                                                   UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-                                                                   [pasteboard setString:[message text]];
-                                                               }];
+        LCCKMenuItem *copyItem =
+        [[LCCKMenuItem alloc] initWithTitle:LCCKLocalizedStrings(@"copy")
+                                      block:^{
+                                          UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+                                          [pasteboard setString:[message text]];
+                                      }];
         
         LCCKConversationViewController *conversationViewController = userInfo[LCCKLongPressMessageUserInfoKeyFromController];
-        LCCKMenuItem *transpondItem = [[LCCKMenuItem alloc] initWithTitle:LCCKLocalizedStrings(@"transpond")
-                                                                    block:^{
-                                                                        [self TranspondMessage:message
-                                                                  toConversationViewController:conversationViewController];
-                                                                    }];
-        
-        NSArray *menuItems = [NSArray array];
-        if (message.mediaType == kAVIMMessageMediaTypeText) {
-            menuItems = @[ copyItem, transpondItem ];
-        }
-        return menuItems;
+        LCCKMenuItem *transpondItem =
+        [[LCCKMenuItem alloc] initWithTitle:LCCKLocalizedStrings(@"transpond")
+                                      block:^{
+                                          [self TranspondMessage:message
+                                    toConversationViewController:conversationViewController];
+                                      }];
+        return @[copyItem, transpondItem];
     }];
 }
 
@@ -122,10 +118,10 @@ toConversationViewController:(LCCKConversationViewController *)conversationViewC
 }
 
 + (void)setForceReconect {
-    [[LCChatKit sharedInstance] setForceReconnectSessionBlock:^(
-                                                                NSError *aError, BOOL granted,
-                                                                __kindof UIViewController *viewController,
-                                                                LCCKReconnectSessionCompletionHandler completionHandler) {
+    [[LCChatKit sharedInstance] setForceReconnectSessionBlock:
+     ^(NSError *aError, BOOL granted,
+       __kindof UIViewController *viewController,
+       LCCKReconnectSessionCompletionHandler completionHandler) {
         
         // User says yes
         if (granted) {
@@ -134,31 +130,33 @@ toConversationViewController:(LCCKConversationViewController *)conversationViewC
                                                     force:force
                                                  callback:^(BOOL succeeded, NSError *error) {
                                                      if (error != nil) {
-                                                         NSLog(@"Failed to reconnect: %@",error);
+                                                         NSLog(@"Failed to reconnect: %@", error.localizedDescription);
                                                      }
                                                  }];
             return;
-        }else {    // User says no
+        }else { // User says no
             [BrainStormUser logOut];
         }
         
         // Show error info
         NSInteger code = 0;
-        NSString *errorReasonText = @"not granted";
+        NSString *errorReasonText = @"Not granted";
         NSDictionary *errorInfo = @{
                                     @"code" : @(code),
                                     NSLocalizedDescriptionKey : errorReasonText,
                                     };
-        NSError *error = [NSError errorWithDomain:NSStringFromClass([self class]) code:code userInfo:errorInfo];
+        NSError *error = [NSError errorWithDomain:NSStringFromClass([self class])
+                                             code:code
+                                         userInfo:errorInfo];
         if (completionHandler) completionHandler(NO, error);
     }];
 }
 
-+ (void)openChatKitWithId:(NSString *)uid {
-    [[LCChatKit sharedInstance] openWithClientId:uid
++ (void)userDidLoginWithId:(NSString * _Nonnull)userId {
+    [[LCChatKit sharedInstance] openWithClientId:userId
                                         callback:^(BOOL succeeded, NSError *error) {
                                             if (!succeeded) {
-                                                NSLog(@"Failed to login: %@",error);
+                                                NSLog(@"Failed to login chat: %@", error.localizedDescription);
                                             }
                                         }];
 }

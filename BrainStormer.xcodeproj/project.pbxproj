@@ -46,10 +46,6 @@
 		BDED02361DA664D8003DAEE4 /* dqd_arrowhead+UIBezierPath.m in Sources */ = {isa = PBXBuildFile; fileRef = BDED02351DA664D8003DAEE4 /* dqd_arrowhead+UIBezierPath.m */; };
 		BDED02391DA670CA003DAEE4 /* Arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = BDED02371DA670CA003DAEE4 /* Arrow.png */; };
 		BDED023A1DA670CA003DAEE4 /* unarrow.png in Resources */ = {isa = PBXBuildFile; fileRef = BDED02381DA670CA003DAEE4 /* unarrow.png */; };
-		BDEDBBC71F51ECB100DF116E /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDEDBBC31F51ECB100DF116E /* Bolts.framework */; };
-		BDEDBBC81F51ECB100DF116E /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDEDBBC41F51ECB100DF116E /* FBSDKCoreKit.framework */; };
-		BDEDBBC91F51ECB100DF116E /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDEDBBC51F51ECB100DF116E /* FBSDKLoginKit.framework */; };
-		BDEDBBCA1F51ECB100DF116E /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDEDBBC61F51ECB100DF116E /* FBSDKShareKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -155,10 +151,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				991531F289B8C02852E4107D /* libPods-BrainStormer.a in Frameworks */,
-				BDEDBBC81F51ECB100DF116E /* FBSDKCoreKit.framework in Frameworks */,
-				BDEDBBCA1F51ECB100DF116E /* FBSDKShareKit.framework in Frameworks */,
-				BDEDBBC91F51ECB100DF116E /* FBSDKLoginKit.framework in Frameworks */,
-				BDEDBBC71F51ECB100DF116E /* Bolts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -428,7 +420,7 @@
 				TargetAttributes = {
 					BD2DE7E81D9EA75700F33477 = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = H932E53VEH;
+						DevelopmentTeam = DXJ7AC4744;
 						ProvisioningStyle = Automatic;
 					};
 					BD2DE8011D9EA75700F33477 = {
@@ -510,13 +502,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BrainStormer-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		8511CE43135B1D9C47FBFC65 /* [CP] Embed Pods Frameworks */ = {
@@ -540,9 +535,26 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-BrainStormer/Pods-BrainStormer-resources.sh",
+				"${PODS_ROOT}/AVOSCloud/AVOS/AVOSCloud/AVOSCloud_Art.inc",
+				"${PODS_ROOT}/ChatKit/ChatKit/Class/Resources/BarButtonIcon.bundle",
+				"${PODS_ROOT}/ChatKit/ChatKit/Class/Resources/ChatKeyboard.bundle",
+				"${PODS_ROOT}/ChatKit/ChatKit/Class/Resources/DateTools.bundle",
+				"${PODS_ROOT}/ChatKit/ChatKit/Class/Resources/Emoji.bundle",
+				"${PODS_ROOT}/ChatKit/ChatKit/Class/Resources/LCCKPBLocalizations.bundle",
+				"${PODS_ROOT}/ChatKit/ChatKit/Class/Resources/LCCKPhotoBrowser.bundle",
+				"${PODS_ROOT}/ChatKit/ChatKit/Class/Resources/MBProgressHUD.bundle",
+				"${PODS_ROOT}/ChatKit/ChatKit/Class/Resources/MessageBubble.bundle",
+				"${PODS_ROOT}/ChatKit/ChatKit/Class/Resources/Other.bundle",
+				"${PODS_ROOT}/ChatKit/ChatKit/Class/Resources/Placeholder.bundle",
+				"${PODS_ROOT}/ChatKit/ChatKit/Class/Resources/VoiceMessageSource.bundle",
+				"${PODS_ROOT}/ChatKit/ChatKit/Class/Module/ContactList/View/LCCKContactCell.xib",
+				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
+				$PODS_CONFIGURATION_BUILD_DIR/MWPhotoBrowser/MWPhotoBrowser.bundle,
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -727,7 +739,7 @@
 			baseConfigurationReference = EBD768C80E32182B6A5523EB /* Pods-BrainStormer.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = H932E53VEH;
+				DEVELOPMENT_TEAM = DXJ7AC4744;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/BrainStormer",
@@ -753,10 +765,11 @@
 					"\"${PODS_ROOT}/Headers/Public/pop\"",
 				);
 				INFOPLIST_FILE = BrainStormer/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Lun.BrainStormer;
+				PRODUCT_BUNDLE_IDENTIFIER = Lun.BrainStorm;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -765,7 +778,7 @@
 			baseConfigurationReference = BFF344B3DB490AF49DA0322E /* Pods-BrainStormer.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = H932E53VEH;
+				DEVELOPMENT_TEAM = DXJ7AC4744;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/BrainStormer",
@@ -791,10 +804,11 @@
 					"\"${PODS_ROOT}/Headers/Public/pop\"",
 				);
 				INFOPLIST_FILE = BrainStormer/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Lun.BrainStormer;
+				PRODUCT_BUNDLE_IDENTIFIER = Lun.BrainStorm;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

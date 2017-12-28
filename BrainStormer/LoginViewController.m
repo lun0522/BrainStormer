@@ -6,9 +6,7 @@
 //  Copyright © 2016年 Lun. All rights reserved.
 //
 
-#import <AVOSCloud/AVOSCloud.h>
-#import <FBSDKLoginKit/FBSDKLoginKit.h>
-#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import "BrainStormEntity.h"
 #import "LoginViewController.h"
 
 @interface LoginViewController ()
@@ -33,70 +31,43 @@
 }
 
 - (IBAction)FBLogin:(id)sender {
-    FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
-    [loginManager logInWithReadPermissions: @[@"public_profile", @"user_friends"]
-                        fromViewController:self
-                                   handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
-                                       if (error) {
-                                           NSLog(@"Process error: %@",error);
-                                       } else if (result.isCancelled) {
-                                           NSLog(@"Cancelled");
-                                       } else {
-                                           NSLog(@"Logged in");
-                                           if ([FBSDKAccessToken currentAccessToken]) {
-                                               FBSDKGraphRequest *graphRequest;
-                                               graphRequest = [[FBSDKGraphRequest alloc] initWithGraphPath:@"me"
-                                                                                                parameters:@{ @"fields" : @"id,name,picture.width(100).height(100)"}];
-                                               [graphRequest startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
-                                                   if (!error) {
-                                                       NSString *nameOfLoginUser = [result valueForKey:@"name"];
-                                                       NSString *imageStringOfLoginUser = [[[result valueForKey:@"picture"] valueForKey:@"data"] valueForKey:@"url"];
-                                                       NSLog(@"Name of user: %@",nameOfLoginUser);
-                                                       NSLog(@"Image URL: %@",imageStringOfLoginUser);
-                                                   }
-                                               }];
-                                           }
-                                       }
-                                   }];
+    // TODO
 }
 
 - (IBAction)Shortcut:(id)sender {
-    UIAlertController * alertController = [UIAlertController alertControllerWithTitle: @"Which test user?"
-                                                                              message: nil
-                                                                       preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertController * alertController =
+    [UIAlertController alertControllerWithTitle: @"Which test user?"
+                                        message: nil
+                                 preferredStyle:UIAlertControllerStyleActionSheet];
     
-    [alertController addAction: [UIAlertAction actionWithTitle: @"user1"
-                                                         style: UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction *action) {
-        [AVUser logInWithUsernameInBackground:@"testuser1"
-                                     password:@"testuser"
-                                        block:^(AVUser *user, NSError *error) {
-            UIViewController *vc= [self.storyboard instantiateViewControllerWithIdentifier:@"RootNavi"];
-            [self presentViewController:vc animated:YES completion:nil];
-        }];
-    }]];
-    [alertController addAction: [UIAlertAction actionWithTitle: @"user2"
-                                                         style: UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction *action) {
-        [AVUser logInWithUsernameInBackground:@"testuser2"
-                                     password:@"testuser"
-                                        block:^(AVUser *user, NSError *error) {
-            UIViewController *vc= [self.storyboard instantiateViewControllerWithIdentifier:@"RootNavi"];
-            [self presentViewController:vc animated:YES completion:nil];
-        }];
-    }]];
-    [alertController addAction: [UIAlertAction actionWithTitle: @"user3"
-                                                         style: UIAlertActionStyleDefault
-                                                       handler:^(UIAlertAction *action) {
-        [AVUser logInWithUsernameInBackground:@"testuser3"
-                                     password:@"testuser"
-                                        block:^(AVUser *user, NSError *error) {
-            UIViewController *vc= [self.storyboard instantiateViewControllerWithIdentifier:@"RootNavi"];
-            [self presentViewController:vc animated:YES completion:nil];
-        }];
-    }]];
+    [alertController addAction:
+     [UIAlertAction actionWithTitle: @"user1"
+                              style: UIAlertActionStyleDefault
+                            handler:^(UIAlertAction *action) {
+                                [BrainStormUser userWithName:@"testuser1"
+                                                    password:@"testuser"];
+                                UIViewController *vc= [self.storyboard instantiateViewControllerWithIdentifier:@"RootNavi"];
+                                [self presentViewController:vc animated:YES completion:nil];
+                            }]];
+    [alertController addAction:
+     [UIAlertAction actionWithTitle: @"user2"
+                              style: UIAlertActionStyleDefault
+                            handler:^(UIAlertAction *action) {
+                                [BrainStormUser userWithName:@"testuser2"
+                                                    password:@"testuser"];
+                                UIViewController *vc= [self.storyboard instantiateViewControllerWithIdentifier:@"RootNavi"];
+                                [self presentViewController:vc animated:YES completion:nil];
+                            }]];
+    [alertController addAction:
+     [UIAlertAction actionWithTitle: @"user3"
+                              style: UIAlertActionStyleDefault
+                            handler:^(UIAlertAction *action) {
+                                [BrainStormUser userWithName:@"testuser3"
+                                                    password:@"testuser"];
+                                UIViewController *vc= [self.storyboard instantiateViewControllerWithIdentifier:@"RootNavi"];
+                                [self presentViewController:vc animated:YES completion:nil];
+                            }]];
     [alertController addAction: [UIAlertAction actionWithTitle: @"Cancel" style: UIAlertActionStyleCancel handler:nil]];
-    
     [self presentViewController: alertController animated: YES completion: nil];
 }
 

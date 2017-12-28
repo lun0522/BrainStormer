@@ -12,12 +12,13 @@
 
 @interface AVOSCloudUtils : NSObject
 
-extern NSString *const BSM_AVOSCloudAppId;
-extern NSString *const BSM_AVOSCloudAppKey;
+extern NSString * _Nonnull const BSM_AVOSCloudAppId;
+extern NSString * _Nonnull const BSM_AVOSCloudAppKey;
 
 + (void)applicationDidfinishLaunch;
-+ (void)getObjectInBackgroundWithClassName:(NSString *)className
-                                  objectId:(NSString *)objectId
-                                completion:(void (^)(AVObject *object, NSError *error))completion;
++ (void)getObjectInBackgroundWithClassName:(NSString * _Nonnull)className
+                                  objectId:(NSString * _Nonnull)objectId
+                                completion:(void (^ _Nullable)(AVObject * _Nullable object,
+                                                               NSError * _Nullable error))completion;
 
 @end
