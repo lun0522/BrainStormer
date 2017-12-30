@@ -12,5 +12,6 @@
 
 + (void)applicationDidfinishLaunch;
 + (void)userDidLoginWithId:(NSString * _Nonnull)userId;
++ (void)userDidLogOut;
 
 @end

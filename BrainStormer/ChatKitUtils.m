@@ -58,20 +58,21 @@
         dispatch_semaphore_t semaphore = dispatch_semaphore_create(userIds.count);
         [userIds enumerateObjectsUsingBlock:^(NSString * _Nonnull uid, NSUInteger idx, BOOL * _Nonnull stop) {
             dispatch_async(queue, ^{
-                [AVOSCloudUtils getObjectInBackgroundWithClassName:@"_User"
-                                                          objectId:uid
-                                                        completion:^(AVObject *object, NSError *error) {
-                                                            LCCKUser *user =
-                                                            [LCCKUser userWithUserId:uid
-                                                                                name:object[@"username"]
-                                                                           avatarURL:object[@"avatarURL"]];
-                                                            [targetUsers addObject:user];
-                                                            dispatch_semaphore_signal(semaphore);
-                                                        }];
+                AVQuery *query = [AVQuery queryWithClassName:@"_User"];
+                [query getObjectInBackgroundWithId:uid
+                                             block:^(AVObject * _Nullable object,
+                                                     NSError * _Nullable error) {
+                                                 LCCKUser *user =
+                                                 [LCCKUser userWithUserId:uid
+                                                                     name:object[@"username"]
+                                                                avatarURL:object[@"avatarURL"]];
+                                                 [targetUsers addObject:user];
+                                                 dispatch_semaphore_signal(semaphore);
+                }];
             });
         }];
         
-        dispatch_semaphore_wait(semaphore, 10 * NSEC_PER_SEC);
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
         completionHandler([targetUsers copy], nil);
     }];
 }
@@ -135,15 +136,15 @@ toConversationViewController:(LCCKConversationViewController *)conversationViewC
                                                  }];
             return;
         }else { // User says no
-            [BrainStormUser logOut];
+            if (BrainStormUser.currentUser) [BrainStormUser.currentUser logout];
         }
         
         // Show error info
         NSInteger code = 0;
         NSString *errorReasonText = @"Not granted";
         NSDictionary *errorInfo = @{
-                                    @"code" : @(code),
-                                    NSLocalizedDescriptionKey : errorReasonText,
+                                    @"code": @(code),
+                                    NSLocalizedDescriptionKey: errorReasonText,
                                     };
         NSError *error = [NSError errorWithDomain:NSStringFromClass([self class])
                                              code:code
@@ -159,6 +160,17 @@ toConversationViewController:(LCCKConversationViewController *)conversationViewC
                                                 NSLog(@"Failed to login chat: %@", error.localizedDescription);
                                             }
                                         }];
+}
+
++ (void)userDidLogOut {
+    [[LCChatKit sharedInstance] removeAllCachedProfiles];
+    [[LCChatKit sharedInstance] closeWithCallback:^(BOOL succeeded, NSError *error) {
+        if (succeeded) {
+            NSLog(@"Logout chat success");
+        } else {
+            NSLog(@"Failed to logout chat: %@", error);
+        }
+    }];
 }
 
 @end

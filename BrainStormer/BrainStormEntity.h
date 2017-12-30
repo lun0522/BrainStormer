@@ -7,13 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <AVOSCloud.h>
 
 @interface BrainStormGroup : NSObject
 
-@property (nonatomic, copy, readonly) NSString * _Nonnull groupId;
-@property (nonatomic, copy, readonly) NSString * _Nonnull topic;
-@property (nonatomic, copy, readonly) NSString * _Nonnull creatorName;
+@property (nonatomic, readonly, copy) NSString * _Nonnull groupId;
+@property (nonatomic, readonly, copy) NSString * _Nonnull topic;
+@property (nonatomic, readonly, copy) NSString * _Nonnull creatorName;
 
 - (instancetype _Nonnull)init NS_UNAVAILABLE;
 + (BrainStormGroup * _Nonnull)groupWithId:(NSString * _Nonnull)groupId
@@ -22,18 +21,24 @@
 
 @end
 
-@interface BrainStormUser : AVUser
+typedef void (^RenewUserCompletionHandler)(NSError * _Nullable error);
+
+@class LCCKConversationViewController;
+
+@interface BrainStormUser : NSObject
 
 - (instancetype _Nonnull)init NS_UNAVAILABLE;
-+ (BrainStormUser * _Nullable)userWithName:(NSString * _Nonnull)username
-                                  password:(NSString * _Nonnull)password;
++ (void)loginWithName:(NSString * _Nonnull)username
+             password:(NSString * _Nonnull)password;
++ (BrainStormUser * _Nullable)currentUser;
+- (void)logout;
 
-- (NSArray<BrainStormGroup *> * _Nonnull)joinedGroupsList;
-- (void)addJoinedGroup:(BrainStormGroup * _Nonnull)group;
-- (void)clearJoinedGroups;
+- (NSString * _Nonnull)userId;
+- (NSArray<BrainStormGroup *> * _Nonnull)joinedGroups;
+- (NSArray<BrainStormGroup *> * _Nonnull)invitedGroups;
 
-- (NSArray<BrainStormGroup *> * _Nonnull)invitedGroupsList;
-- (void)addInvitedGroup:(BrainStormGroup * _Nonnull)group;
-- (void)clearInvitedGroups;
+- (LCCKConversationViewController * _Nullable)joinGroupWithId:(NSString * _Nonnull)groupId;
+- (void)quitGroupWithId:(NSString * _Nonnull)groupId;
+- (void)renewUserWithCompletionHandler:(RenewUserCompletionHandler _Nullable)handler;
 
 @end

@@ -44,8 +44,7 @@
      [UIAlertAction actionWithTitle: @"user1"
                               style: UIAlertActionStyleDefault
                             handler:^(UIAlertAction *action) {
-                                [BrainStormUser userWithName:@"testuser1"
-                                                    password:@"testuser"];
+                                [BrainStormUser loginWithName:@"testuser1" password:@"testuser"];
                                 UIViewController *vc= [self.storyboard instantiateViewControllerWithIdentifier:@"RootNavi"];
                                 [self presentViewController:vc animated:YES completion:nil];
                             }]];
@@ -53,8 +52,7 @@
      [UIAlertAction actionWithTitle: @"user2"
                               style: UIAlertActionStyleDefault
                             handler:^(UIAlertAction *action) {
-                                [BrainStormUser userWithName:@"testuser2"
-                                                    password:@"testuser"];
+                                [BrainStormUser loginWithName:@"testuser2" password:@"testuser"];
                                 UIViewController *vc= [self.storyboard instantiateViewControllerWithIdentifier:@"RootNavi"];
                                 [self presentViewController:vc animated:YES completion:nil];
                             }]];
@@ -62,8 +60,7 @@
      [UIAlertAction actionWithTitle: @"user3"
                               style: UIAlertActionStyleDefault
                             handler:^(UIAlertAction *action) {
-                                [BrainStormUser userWithName:@"testuser3"
-                                                    password:@"testuser"];
+                                [BrainStormUser loginWithName:@"testuser3" password:@"testuser"];
                                 UIViewController *vc= [self.storyboard instantiateViewControllerWithIdentifier:@"RootNavi"];
                                 [self presentViewController:vc animated:YES completion:nil];
                             }]];
