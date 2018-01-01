@@ -6,14 +6,12 @@
 //  Copyright © 2016年 Lun. All rights reserved.
 //
 
-#import <AVOSCloud/AVOSCloud.h>
-#import <ChatKit/LCChatKit.h>
 #import "BrainStormEntity.h"
-#import "GroupListViewController.h"
-#import "HowToAddViewController.h"
+#import "AddGroupTableViewController.h"
 #import "GroupRoomViewController.h"
+#import "GroupListViewController.h"
 
-@interface GroupListViewController ()
+@interface GroupListViewController () <UIPopoverPresentationControllerDelegate>
 
 @end
 
@@ -24,7 +22,10 @@
     
     [self setNaviItem];
     [self setRefresher];
+}
 
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
 }
 
 - (void)setNaviItem {
@@ -52,17 +53,7 @@
 }
 
 - (void)GroupCreated:(NSNotification *) notification {
-    [self RefreshData];
-}
-
-- (void)GotoJoinin:(NSNotification *) notification {
-    UIViewController *vc= [self.storyboard instantiateViewControllerWithIdentifier:@"JoininGroup"];
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
-- (void)GotoCreate:(NSNotification *) notification {
-    UIViewController *vc= [self.storyboard instantiateViewControllerWithIdentifier:@"CreateGroup"];
-    [self.navigationController pushViewController:vc animated:YES];
+    [self refreshTableWithCompletionHandler:nil];
 }
 
 - (void)Logout:(id)sender {
@@ -71,13 +62,22 @@
 }
 
 - (void)AddGroup:(id)sender {
-    HowToAddViewController *Table = [[HowToAddViewController alloc] init];
-    Table.preferredContentSize = CGSizeMake(150, 87);
-    Table.modalPresentationStyle = UIModalPresentationPopover;
-    Table.popoverPresentationController.barButtonItem = self.navigationItem.rightBarButtonItem;
-    Table.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
-    Table.popoverPresentationController.delegate = self;
-    [self presentViewController:Table animated:YES completion:nil];
+    __weak GroupListViewController *weakSelf = self;
+    AddGroupTableViewController *tvc = [[AddGroupTableViewController alloc] initWithCallback:^(AddGroupOption option) {
+        UIViewController *vc;
+        
+        if (option == JoinGroup) vc = [self.storyboard instantiateViewControllerWithIdentifier:@"JoinGroup"];
+        else if (option == CreateGroup) vc = [self.storyboard instantiateViewControllerWithIdentifier:@"CreateGroup"];
+        else NSLog(@"Unknown add group option!");
+        
+        if (vc) [weakSelf.navigationController pushViewController:vc animated:YES];
+    }];
+    tvc.preferredContentSize = CGSizeMake(150, 87);
+    tvc.modalPresentationStyle = UIModalPresentationPopover;
+    tvc.popoverPresentationController.barButtonItem = self.navigationItem.rightBarButtonItem;
+    tvc.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
+    tvc.popoverPresentationController.delegate = self;
+    [self presentViewController:tvc animated:YES completion:nil];
 }
 
 - (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller {
@@ -95,7 +95,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSUInteger row = [indexPath row];
+    NSUInteger row = indexPath.row;
     
     static NSString * CellIdentifier = @"CellIdentifier";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -137,7 +137,7 @@
                                                          UIViewController *vc = [BrainStormUser.currentUser joinGroupWithId:BrainStormUser.currentUser.invitedGroups[TapYes.tag - BrainStormUser.currentUser.joinedGroups.count].groupId];
                                                          if (vc) {
                                                              [self.navigationController pushViewController:vc animated:YES];
-                                                             [self RefreshData];
+                                                             [self refreshTableWithCompletionHandler:nil];
                                                          }
                                                      }];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:nil];
@@ -151,7 +151,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSUInteger row = [indexPath row];
+    NSUInteger row = indexPath.row;
     
     if (row < BrainStormUser.currentUser.invitedGroups.count) {
         GroupRoomViewController *GroupRoom = [[GroupRoomViewController alloc] init];
@@ -163,21 +163,19 @@
 - (void)controlEventValueChanged:(id)sender {
     if (self.refreshControl.refreshing) {
         self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Refreshing..."];
-        [self RefreshData];
-        [self.refreshControl endRefreshing];
+        [self refreshTableWithCompletionHandler:^{
+            [self.refreshControl endRefreshing];
+        }];
     }
 }
 
-- (void)RefreshData {
+- (void)refreshTableWithCompletionHandler:(void (^)())handler {
     __weak GroupListViewController *weakSelf = self;
     [BrainStormUser.currentUser renewUserWithCompletionHandler:^(NSError * _Nullable error) {
         if (error) NSLog(@"Failed to refresh: %@", error.localizedDescription);
         else [weakSelf.tableView reloadData];
+        handler();
     }];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
 }
 
 @end

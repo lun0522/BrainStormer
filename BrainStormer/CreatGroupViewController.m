@@ -6,9 +6,23 @@
 //  Copyright © 2016年 Lun. All rights reserved.
 //
 
+#import <Photos/Photos.h>
+#import <AVOSCloud/AVOSCloud.h>
+#import "BrainStormEntity.h"
+#import "InviteTableViewController.h"
 #import "CreatGroupViewController.h"
 
-@interface CreatGroupViewController ()
+@interface CreatGroupViewController () {
+    NSArray<BrainStormPeople *> *_invitePeopleList;
+}
+
+@property (weak, nonatomic) IBOutlet UIImageView *QRImage;
+@property (weak, nonatomic) IBOutlet UITextField *topic;
+@property (weak, nonatomic) IBOutlet UITextView *invitePeople;
+
+- (IBAction)tapQR:(id)sender;
+- (IBAction)inviteMore:(id)sender;
+- (IBAction)createGroup:(id)sender;
 
 @end
 
@@ -26,27 +40,24 @@
 }
 
 - (void)SetTextView {
-    self.InviteList.editable = NO;
-    self.InviteList.text = @"Please invite at least one people...";
-    self.InviteNameList = [[NSMutableArray alloc] initWithObjects:@"Alloc", nil];
-    [self.InviteNameList removeAllObjects];
-    self.InviteIdList = [[NSMutableArray alloc] initWithObjects:@"Alloc", nil];
-    [self.InviteIdList removeAllObjects];
-    self.Topic.layer.cornerRadius = 5.0f;
-    self.Topic.layer.borderWidth = 1.0f;
-    self.InviteList.layer.cornerRadius = 5.0f;
-    self.InviteList.layer.borderWidth = 1.0f;
+    self.invitePeople.editable = NO;
+    self.invitePeople.text = @"Please invite at least one people...";
+    _invitePeopleList = [NSArray array];
+    self.topic.layer.cornerRadius = 5.0f;
+    self.topic.layer.borderWidth = 1.0f;
+    self.invitePeople.layer.cornerRadius = 5.0f;
+    self.invitePeople.layer.borderWidth = 1.0f;
 }
 
 - (void)InvitedChange:(NSNotification *) notification {
-    if ([self.InviteNameList count] == 0) {
-        self.InviteList.text = @"Please invite at least one people...";
+    if (_invitePeopleList.count == 0) {
+        self.invitePeople.text = @"Please invite at least one people...";
     }else {
-        self.InviteList.text = [self.InviteNameList componentsJoinedByString:@", "];
+        self.invitePeople.text = [_invitePeopleList componentsJoinedByString:@", "];
     }
 }
 
-- (IBAction)TapQR:(id)sender {
+- (IBAction)tapQR:(id)sender {
     if (!self.QRImage.hidden) {
         PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
 
@@ -84,25 +95,25 @@
     }
 }
 
-- (IBAction)InviteMore:(id)sender {
-    InviteTableViewController *vc= [self.storyboard instantiateViewControllerWithIdentifier:@"InviteTable"];
-    [vc.SelectedName removeAllObjects];
-    [vc.SelectedId removeAllObjects];
-    vc.SelectedName = self.InviteNameList;
-    vc.SelectedId = self.InviteIdList;
-    
+- (IBAction)inviteMore:(id)sender {
+    InviteTableViewController *vc = [[InviteTableViewController alloc]
+                                     initWithSelectedPeople:_invitePeopleList
+                                     callback:^(NSArray<BrainStormPeople *> * _Nullable peopleList) {
+                                         if (peopleList) {
+                                             _invitePeopleList = peopleList;
+                                         }
+                                     }];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (IBAction)CreateGroup:(id)sender {
-    if (self.Topic.text.length == 0) {
+- (IBAction)createGroup:(id)sender {
+    if (self.topic.text.length == 0) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Please say something about the topic!" message:nil preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleCancel handler:nil];
         [alertController addAction:cancelAction];
         [self presentViewController:alertController animated:YES completion:nil];
     }else {
-        AVUser *currentUser = [AVUser currentUser];
-        NSArray *namelist = [[NSArray alloc] initWithObjects:currentUser.objectId, [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970]], nil];
+        NSArray *namelist = [[NSArray alloc] initWithObjects:BrainStormUser.currentUser.userId, [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970]], nil];
         NSMutableDictionary *dicParameters = [NSMutableDictionary dictionary];
         [dicParameters setObject:namelist forKey:@"namelist"];
         
@@ -148,7 +159,7 @@
                     
                     // Save group topic, title, creator name and picture to _Conversation
                     AVObject *setgroup = [AVObject objectWithClassName:@"_Conversation" objectId:NewGroupId];
-                    [setgroup setObject:self.Topic.text forKey:@"Topic"];
+                    [setgroup setObject:self.topic.text forKey:@"Topic"];
                     [setgroup setObject:currentUser.username forKey:@"Creator"];
                     [setgroup saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                         if (error != nil) {
@@ -158,7 +169,7 @@
                             [[NSNotificationCenter defaultCenter] postNotificationName:@"CreateGroupNotification" object:nil userInfo:@{}];
                             
                             // Clean topic, to avoid creating a same group
-                            self.Topic.text = @"";
+                            self.topic.text = @"";
                         }
                     }];
                 }
@@ -167,26 +178,26 @@
     }];
     
     // Post invitations to invited persons
-    for (NSInteger j = 0; j < [self.InviteIdList count]; j++) {
-        
-        AVObject *InvitationLetter = [AVObject objectWithClassName:@"Invitation"];
-        [InvitationLetter setObject:[self.InviteIdList objectAtIndex:j] forKey:@"InvitedId"];
-        [InvitationLetter setObject:NewGroupId forKey:@"InvitedToGroup"];
-        [InvitationLetter setObject:self.Topic.text forKey:@"GroupTopic"];
-        [InvitationLetter setObject:currentUser.username forKey:@"InviterName"];
-        [InvitationLetter saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+    for (BrainStormPeople *people in _invitePeopleList) {
+        AVObject *invitation = [AVObject objectWithClassName:@"Invitation"];
+        [invitation setObject:people[BSPIdKey] forKey:@"InvitedId"];
+        [invitation setObject:NewGroupId forKey:@"InvitedToGroup"];
+        [invitation setObject:self.topic.text forKey:@"GroupTopic"];
+        [invitation setObject:currentUser.username forKey:@"InviterName"];
+        [invitation saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (error != nil) {
                 NSLog(@"Failed to send an invitation: %@",error);
             }else {
                 // Clean invitelist, to avoid creating a same group
-                self.InviteList.text = @"";
+                _invitePeopleList = [NSArray array];
+                self.invitePeople.text = @"";
             }
         }];
     }
     
     self.QRImage.hidden = NO;
     self.QRImage.userInteractionEnabled = YES;
-    NSString *Media = [self.Topic.text stringByAppendingString:@" "];
+    NSString *Media = [self.topic.text stringByAppendingString:@" "];
     self.QRImage.image =[self createQRForString:[Media stringByAppendingString:NewGroupId]];
 }
 

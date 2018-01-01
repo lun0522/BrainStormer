@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Login View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="FirstPage" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="LoginViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CoverPage" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="LoginViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="04C-2h-RKf"/>
                         <viewControllerLayoutGuide type="bottom" id="01C-nA-9HY"/>
@@ -48,34 +48,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="32.799999999999997" y="63.418290854572717"/>
-        </scene>
-        <!--I want to invite...-->
-        <scene sceneID="xaJ-4g-UaF">
-            <objects>
-                <tableViewController storyboardIdentifier="InviteTable" title="I want to invite..." useStoryboardIdentifierAsRestorationIdentifier="YES" id="mBt-PY-SFf" customClass="InviteTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="MOA-vG-j9k">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="W7R-k4-qJo">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="W7R-k4-qJo" id="5xY-E5-tKm">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="mBt-PY-SFf" id="hFb-Cv-AXT"/>
-                            <outlet property="delegate" destination="mBt-PY-SFf" id="WPX-DT-Zaa"/>
-                        </connections>
-                    </tableView>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Z7I-eg-bG4" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2585" y="-645"/>
         </scene>
         <!--Create a Group-->
         <scene sceneID="yHH-Ja-Esn">
@@ -122,7 +94,7 @@
                                 <rect key="frame" x="315" y="498" width="22" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <connections>
-                                    <action selector="InviteMore:" destination="fLH-ZV-Kaw" eventType="touchUpInside" id="Xz9-An-VZm"/>
+                                    <action selector="inviteMore:" destination="fLH-ZV-Kaw" eventType="touchUpInside" id="Xz9-An-VZm"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Isa-QZ-VWM">
@@ -131,7 +103,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <state key="normal" title="Create a Group and generate a QR code"/>
                                 <connections>
-                                    <action selector="CreateGroup:" destination="fLH-ZV-Kaw" eventType="touchUpInside" id="YiG-hQ-Jgr"/>
+                                    <action selector="createGroup:" destination="fLH-ZV-Kaw" eventType="touchUpInside" id="YiG-hQ-Jgr"/>
                                 </connections>
                             </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Yut-du-nVh">
@@ -146,15 +118,15 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
-                        <outlet property="InviteList" destination="Yut-du-nVh" id="V77-6M-nm0"/>
                         <outlet property="QRImage" destination="cYR-5s-UYj" id="Vei-EO-7PX"/>
-                        <outlet property="Topic" destination="Nfz-Gg-60Z" id="hnc-XC-Www"/>
+                        <outlet property="invitePeople" destination="Yut-du-nVh" id="uQN-XC-vGo"/>
+                        <outlet property="topic" destination="Nfz-Gg-60Z" id="fek-0K-oTW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SGh-Fk-Qu0" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="yuP-jk-Zck">
                     <connections>
-                        <action selector="TapQR:" destination="fLH-ZV-Kaw" id="a9o-U8-85i"/>
+                        <action selector="tapQR:" destination="fLH-ZV-Kaw" id="a9o-U8-85i"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
@@ -165,7 +137,7 @@
             <objects>
                 <navigationController storyboardIdentifier="RootNavi" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BjD-sU-IQC" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="dvP-JD-qwg">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -189,7 +161,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6eG-h2-PYM" id="bjd-MG-Nqf">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -305,7 +277,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0uK-DL-N3N" id="gYw-va-5kj">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>

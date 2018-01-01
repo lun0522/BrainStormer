@@ -32,6 +32,43 @@
     return self;
 }
 
+- (NSUInteger)hash {
+    return _groupId.hash ^ _topic.hash ^ _creatorName.hash;
+}
+
+- (BOOL)isEqual:(id)object {
+    if (![object isMemberOfClass:self.class]) return NO;
+    BrainStormGroup *group = object;
+    return group.groupId == _groupId && group.topic == _topic && group.creatorName == _creatorName;
+}
+
+@end
+
+@implementation BrainStormPeople
+
+NSString *const BSPIdKey = @"id";
+NSString *const BSPNameKey = @"name";
+
++ (BrainStormPeople * _Nonnull)peopleWithId:(NSString * _Nonnull)uid
+                                       name:(NSString * _Nonnull)name {
+    return [[BrainStormPeople alloc] initWithId:uid name:name];
+}
+
+- (instancetype)initWithId:(NSString *)uid
+                      name:(NSString *)name {
+    return [super initWithObjectsAndKeys:uid, BSPIdKey, name, BSPNameKey, nil];
+}
+
+- (NSUInteger)hash {
+    return ((NSString *)self[BSPIdKey]).hash ^ ((NSString *)self[BSPNameKey]).hash;
+}
+
+- (BOOL)isEqual:(id)object {
+    if (![object isMemberOfClass:[self class]]) return NO;
+    BrainStormPeople *people = object;
+    return people[BSPIdKey] == self[BSPIdKey] && people[BSPNameKey] == self[BSPNameKey];
+}
+
 @end
 
 @implementation BrainStormUser {
@@ -74,6 +111,7 @@ static BrainStormUser *sharedUser = nil;
         _joinedGroups = [NSMutableArray array];
         _invitedGroups = [NSMutableArray array];
         
+        [self renewUserWithCompletionHandler:nil];
         [self getAvatarFromURL:_user[@"avatarUrl"]];
         [ChatKitUtils userDidLoginWithId:_user.objectId];
         
@@ -135,7 +173,11 @@ static BrainStormUser *sharedUser = nil;
     return _joinedGroups.copy;
 }
 
-- (LCCKConversationViewController * _Nullable)joinGroupWithId:(NSString * _Nonnull)groupId {
+- (NSArray<BrainStormPeople *> * _Nonnull)friendsList {
+    return _user[@"FriendsList"];
+}
+
+- (UIViewController * _Nullable)joinGroupWithId:(NSString * _Nonnull)groupId {
     BrainStormGroup *willJoinGroup;
     for (BrainStormGroup *group in _invitedGroups) {
         if (group.groupId == groupId) {
@@ -220,7 +262,7 @@ static BrainStormUser *sharedUser = nil;
     
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(2);
     
-    // fetch ids of joined groups
+    // fetch friends list and ids of joined groups
     [_user fetchInBackgroundWithKeys:@[@"JoinedGroups"] block:^(AVObject * _Nullable object,
                                                                 NSError * _Nullable error) {
         if (error) {
@@ -243,7 +285,7 @@ static BrainStormUser *sharedUser = nil;
                     for (AVObject *group in objects) {
                         [_joinedGroups addObject:[BrainStormGroup groupWithId:group.objectId
                                                                         topic:group[@"topic"]
-                                                                  creatorName:group[@"inviterName"]]];
+                                                                  creatorName:group[@"creatorName"]]];
                     }
                 }
                 dispatch_semaphore_signal(semaphore);
@@ -270,7 +312,7 @@ static BrainStormUser *sharedUser = nil;
     }];
     
     dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-    handler(nil);
+    if (handler) handler(nil);
 }
 
 @end

@@ -11,6 +11,9 @@
 
 @interface LoginViewController ()
 
+@property (weak, nonatomic) IBOutlet UIButton *ShortCutButton;
+@property (weak, nonatomic) IBOutlet UIButton *FacebookButton;
+
 @end
 
 @implementation LoginViewController

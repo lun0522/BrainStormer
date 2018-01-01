@@ -7,12 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <AVOSCloud/AVOSCloud.h>
-#import "CreatGroupViewController.h"
+
+@class BrainStormPeople;
+
+typedef void (^SelectPeopleCallback)(NSArray<BrainStormPeople *> * _Nullable peopleList);
 
 @interface InviteTableViewController : UITableViewController
 
-@property (nonatomic,strong) NSMutableArray *SelectedName;
-@property (nonatomic,strong) NSMutableArray *SelectedId;
+- (instancetype _Nonnull)init NS_UNAVAILABLE;
+- (instancetype _Nonnull)initWithSelectedPeople:(NSArray<BrainStormPeople *> * _Nonnull)selectedPeople
+                                       callback:(SelectPeopleCallback _Nonnull)callback;
 
 @end

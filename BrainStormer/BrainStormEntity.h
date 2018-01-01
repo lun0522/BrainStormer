@@ -23,7 +23,18 @@
 
 typedef void (^RenewUserCompletionHandler)(NSError * _Nullable error);
 
-@class LCCKConversationViewController;
+extern NSString * _Nonnull const BSPIdKey;
+extern NSString * _Nonnull const BSPNameKey;
+
+@interface BrainStormPeople : NSDictionary
+
+- (instancetype _Nonnull)init NS_UNAVAILABLE;
++ (BrainStormPeople * _Nonnull)peopleWithId:(NSString * _Nonnull)uid
+                                       name:(NSString * _Nonnull)name;
+
+@end
+
+@class UIViewController;
 
 @interface BrainStormUser : NSObject
 
@@ -36,8 +47,9 @@ typedef void (^RenewUserCompletionHandler)(NSError * _Nullable error);
 - (NSString * _Nonnull)userId;
 - (NSArray<BrainStormGroup *> * _Nonnull)joinedGroups;
 - (NSArray<BrainStormGroup *> * _Nonnull)invitedGroups;
+- (NSArray<BrainStormPeople *> * _Nonnull)friendsList;
 
-- (LCCKConversationViewController * _Nullable)joinGroupWithId:(NSString * _Nonnull)groupId;
+- (UIViewController * _Nullable)joinGroupWithId:(NSString * _Nonnull)groupId;
 - (void)quitGroupWithId:(NSString * _Nonnull)groupId;
 - (void)renewUserWithCompletionHandler:(RenewUserCompletionHandler _Nullable)handler;
 

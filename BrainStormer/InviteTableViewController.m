@@ -6,57 +6,58 @@
 //  Copyright © 2016年 Lun. All rights reserved.
 //
 
+#import "BrainStormEntity.h"
 #import "InviteTableViewController.h"
 
 @interface InviteTableViewController () {
-    NSArray *FriendNameList;
-    NSArray *FriendIdList;
-    NSMutableArray *TempNameList;
-    NSMutableArray *TempIdList;
+    NSMutableArray *_selectedList;
+    SelectPeopleCallback _callback;
 }
 
 @end
 
 @implementation InviteTableViewController
 
+- (instancetype _Nonnull)initWithSelectedPeople:(NSArray<BrainStormPeople *> * _Nonnull)selectedPeople
+                                       callback:(SelectPeopleCallback _Nonnull)callback {
+    if (self = [super initWithStyle:UITableViewStylePlain]) {
+        _selectedList = selectedPeople.mutableCopy;
+        _callback = callback;
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    AVUser *currentUser = [AVUser currentUser];
-    FriendNameList = [currentUser objectForKey:@"FriendNameList"];
-    FriendIdList = [currentUser objectForKey:@"FriendIdList"];
-    TempNameList = self.SelectedName;
-    TempIdList = self.SelectedId;
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
+                                                                     style:UIBarButtonItemStyleDone
+                                                                    target:self
+                                                                    action:@selector(cancelAction:)];
+    [[self navigationItem] setLeftBarButtonItem:cancelButton];
     
-    UIBarButtonItem *cancelBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleDone target:self action:@selector(cancelAction:)];
-    [[self navigationItem] setLeftBarButtonItem:cancelBarButton];
-    
-    UIBarButtonItem *doneBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(doneAction:)];
-    self.navigationItem.rightBarButtonItem = doneBarButton;
-}
-
-- (void)cancelAction:(id)sender {
-    [TempNameList removeAllObjects];
-    [TempIdList removeAllObjects];
-    TempNameList = self.SelectedName;
-    TempIdList = self.SelectedId;
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (void)doneAction:(id)sender {
-    CreatGroupViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"CreateGroup"];
-    [vc.InviteNameList removeAllObjects];
-    [vc.InviteIdList removeAllObjects];
-    vc.InviteNameList = TempNameList;
-    vc.InviteIdList = TempIdList;
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"InvitedChangeNotification" object:nil userInfo:@{}];
-    [self.navigationController popViewControllerAnimated:YES];
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done"
+                                                                   style:UIBarButtonItemStyleDone
+                                                                  target:self
+                                                                  action:@selector(doneAction:)];
+    self.navigationItem.rightBarButtonItem = doneButton;
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)cancelAction:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
+    _callback(nil);
+    _callback = nil;
+}
+
+- (void)doneAction:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
+    _callback(_selectedList.copy);
+    _callback = nil;
 }
 
 #pragma mark - Table view data source
@@ -66,30 +67,27 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [FriendNameList count];
+    return BrainStormUser.currentUser.friendsList.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSUInteger row = [indexPath row];
+    NSUInteger row = indexPath.row;
     
     static NSString * CellIdentifier = @"CellIdentifier";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     cell = [[[NSBundle mainBundle] loadNibNamed:@"InviteTableViewCell" owner:nil options:nil] firstObject];
     
     cell.userInteractionEnabled = YES;
-    UILabel *Name = (UILabel *)[cell viewWithTag:1];
-    Name.text = [FriendNameList objectAtIndex:row];
-    UIImageView *Invited = (UIImageView *)[cell viewWithTag:2];
-    UILabel *Id = (UILabel *)[cell viewWithTag:3];
-    Id.text = [FriendIdList objectAtIndex:row];
+    UILabel *name = (UILabel *)[cell viewWithTag:1];
+    name.text = BrainStormUser.currentUser.friendsList[row][BSPNameKey];
+    UIImageView *invitedIcon = (UIImageView *)[cell viewWithTag:2];
+    UILabel *uid = (UILabel *)[cell viewWithTag:3];
+    uid.text = BrainStormUser.currentUser.friendsList[row][BSPIdKey];
     
-    Id.hidden = YES;
-    if ([self.SelectedName containsObject:Name.text]) {
-        Invited.hidden = NO;
-    }else {
-        Invited.hidden = YES;
-    }
-    Invited.image = [UIImage imageNamed:@"invited.png"];
+    uid.hidden = YES;
+    invitedIcon.hidden = [_selectedList containsObject:[BrainStormPeople peopleWithId:uid.text
+                                                                                 name:name.text]];
+    invitedIcon.image = [UIImage imageNamed:@"invited.png"];
     
     return cell;
 }
@@ -97,19 +95,15 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    UILabel *Name = (UILabel *)[cell viewWithTag:1];
-    UIImageView *Invited = (UIImageView *)[cell viewWithTag:2];
-    UILabel *Id = (UILabel *)[cell viewWithTag:3];
+    UILabel *name = (UILabel *)[cell viewWithTag:1];
+    UIImageView *invitedIcon = (UIImageView *)[cell viewWithTag:2];
+    UILabel *uid = (UILabel *)[cell viewWithTag:3];
+    BrainStormPeople *selectedPeople = [BrainStormPeople peopleWithId:uid.text
+                                                                 name:name.text];
     
-    if (Invited.hidden) {    //Not selected before
-        [TempNameList addObject:Name.text];
-        [TempIdList addObject:Id.text];
-        Invited.hidden = NO;
-    }else {    //Selected before
-        [TempNameList removeObject:Name.text];
-        [TempIdList removeObject:Id.text];
-        Invited.hidden = YES;
-    }
+    if (invitedIcon.hidden) [_selectedList addObject:selectedPeople];
+    else [_selectedList removeObject:selectedPeople];
+    invitedIcon.hidden = !invitedIcon.hidden;
 }
 
 @end

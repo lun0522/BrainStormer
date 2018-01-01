@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GroupListViewController : UITableViewController <UIPopoverPresentationControllerDelegate>
+@interface GroupListViewController : UITableViewController
 
 @end
