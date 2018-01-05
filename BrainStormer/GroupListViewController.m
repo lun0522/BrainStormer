@@ -171,12 +171,17 @@
 
 - (void)refreshTableWithCompletionHandler:(void (^)(void))handler {
     __weak GroupListViewController *weakSelf = self;
-    [BrainStormUser.currentUser renewUserWithOption:RenewJoinedGroups | RenewInvitedGroups
-                                  CompletionHandler:^(NSError * _Nullable error) {
-        if (error) NSLog(@"Failed to refresh: %@", error.localizedDescription);
-        else [weakSelf.tableView reloadData];
-        handler();
-    }];
+    [BrainStormUser.currentUser renewUserInBackgroundWithOption:RenewJoinedGroups | RenewInvitedGroups
+                                              completionHandler:^(NSError * _Nullable error) {
+                                                  if (error) {
+                                                      NSLog(@"Failed to refresh: %@", error.localizedDescription);
+                                                  } else {
+                                                      dispatch_async(dispatch_get_main_queue(), ^{
+                                                          [weakSelf.tableView reloadData];
+                                                          if (handler) handler();
+                                                      });
+                                                  }
+                                              }];
 }
 
 @end

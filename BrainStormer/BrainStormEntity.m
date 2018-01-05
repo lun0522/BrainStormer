@@ -44,19 +44,14 @@
 
 @end
 
-@implementation BrainStormPeople
+@implementation NSDictionary (people)
 
 NSString *const BSPIdKey = @"id";
 NSString *const BSPNameKey = @"name";
 
 + (BrainStormPeople * _Nonnull)peopleWithId:(NSString * _Nonnull)uid
                                        name:(NSString * _Nonnull)name {
-    return [[BrainStormPeople alloc] initWithId:uid name:name];
-}
-
-- (instancetype)initWithId:(NSString *)uid
-                      name:(NSString *)name {
-    return [super initWithObjectsAndKeys:uid, BSPIdKey, name, BSPNameKey, nil];
+    return @{BSPIdKey: uid, BSPNameKey: name};
 }
 
 - (NSUInteger)hash {
@@ -65,14 +60,14 @@ NSString *const BSPNameKey = @"name";
 
 - (BOOL)isEqual:(id)object {
     if (![object isMemberOfClass:[self class]]) return NO;
-    BrainStormPeople *people = object;
-    return people[BSPIdKey] == self[BSPIdKey] && people[BSPNameKey] == self[BSPNameKey];
+    return object[BSPIdKey] == self[BSPIdKey];
 }
 
 @end
 
 @implementation BrainStormUser {
     AVUser *_user;
+    NSMutableArray<NSDictionary *> *_friendsList;
     NSMutableArray<BrainStormGroup *> *_joinedGroups;
     NSMutableArray<BrainStormGroup *> *_invitedGroups;
 }
@@ -92,7 +87,8 @@ static BrainStormUser *sharedUser = nil;
 + (void)loginWithName:(NSString * _Nonnull)username
              password:(NSString * _Nonnull)password {
     @synchronized(self) {
-        if (!sharedUser) sharedUser = [[BrainStormUser alloc] initWithUserame:username password:password];
+        if (!sharedUser) sharedUser = [[BrainStormUser alloc] initWithUserame:username
+                                                                     password:password];
         else NSLog(@"Not yet logout!");
     }
 }
@@ -108,13 +104,16 @@ static BrainStormUser *sharedUser = nil;
         NSLog(@"Failed to login: %@", error.localizedDescription);
         return nil;
     } else {
+        _friendsList = [NSMutableArray array];
         _joinedGroups = [NSMutableArray array];
         _invitedGroups = [NSMutableArray array];
         
-        [self renewUserWithOption:RenewJoinedGroups | RenewInvitedGroups CompletionHandler:nil];
-        [self getAvatarFromURL:_user[@"avatarUrl"]];
         [ChatKitUtils userDidLoginWithId:_user.objectId];
-        
+        [self getAvatarFromURL:_user[@"avatarUrl"]];
+        [self renewUserInBackgroundWithOption:RenewJoinedGroups | RenewInvitedGroups
+                            completionHandler:^(NSError * _Nullable error) {
+                                if (error) NSLog(@"Failed to renew: %@", error.localizedDescription);
+                            }];
         return self;
     }
 }
@@ -182,48 +181,43 @@ static BrainStormUser *sharedUser = nil;
 }
 
 - (NSArray<BrainStormPeople *> * _Nonnull)friendsList {
-    return _user[@"FriendsList"];
+    return _friendsList.copy;
 }
 
-- (NSString * _Nullable)createGroupWithTopic:(NSString * _Nonnull)topic
-                               invitedIdList:(NSArray<NSString *> * _Nonnull) idList {
+- (void)createGroupWithTopic:(NSString * _Nonnull)topic
+               invitedIdList:(NSArray<NSString *> * _Nonnull)idList
+           completionHandler:(CreateGroupCompletionHandler _Nonnull)handler {
     // create group and fetch its id
     NSDictionary *params = @{
                              @"topic": topic,
                              @"creatorId": BrainStormUser.currentUser.userId,
-                             @"creatorName": _user.username,
+                             @"inviterName": _user.username,
                              @"invitedId": idList,
-                             @"timestamp": [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970]],
+                             @"timestamp": [NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]],
                              };
-    __block NSString *newGroupId;
-    __block NSString *encryptedString;
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(1);
-    [AVCloud callFunctionInBackground:@"CreateGroup"
+    [AVCloud callFunctionInBackground:@"create_group"
                        withParameters:params
                                 block:^(id object, NSError *error) {
                                     if (error) {
-                                        NSLog(@"Failed to create a group: %@",error);
+                                        handler(error, nil);
                                     } else {
-                                        newGroupId = object[@"objectId"];
-                                        encryptedString = object[@"encrypted"];
+                                        NSString *newGroupId = object[@"groupId"];
+                                        NSString *encrypted = object[@"encrypted"];
+                                        
+                                        // renew cloud
+                                        [_user[@"joinedGroups"] addObject:newGroupId];
+                                        [_user saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+                                            if (error) NSLog(@"Failed to renew cloud: %@", error.localizedDescription);
+                                        }];
+                                        
+                                        // renew local
+                                        [_joinedGroups addObject:[BrainStormGroup groupWithId:newGroupId
+                                                                                        topic:topic
+                                                                                  creatorName:_user.username]];
+                                        
+                                        handler(nil, encrypted);
                                     }
-                                    dispatch_semaphore_signal(semaphore);
                                 }];
-    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-    if (!newGroupId || !encryptedString) return nil;
-    
-    // renew cloud
-    [_user[@"JoinedGroups"] addObject:newGroupId];
-    [_user saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
-        if (error) NSLog(@"Failed to renew cloud: %@", error.localizedDescription);
-    }];
-    
-    // renew local
-    [_joinedGroups addObject:[BrainStormGroup groupWithId:newGroupId
-                                                    topic:topic
-                                              creatorName:_user.username]];
-    
-    return encryptedString;
 }
 
 - (UIViewController * _Nullable)joinGroupWithId:(NSString * _Nonnull)groupId {
@@ -241,7 +235,7 @@ static BrainStormUser *sharedUser = nil;
     }
     
     // renew cloud
-    [_user[@"JoinedGroups"] addObject:groupId];
+    [_user[@"joinedGroups"] addObject:groupId];
     [_user saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
         if (error) NSLog(@"Failed to renew cloud: %@", error.localizedDescription);
     }];
@@ -280,7 +274,7 @@ static BrainStormUser *sharedUser = nil;
     }
     
     // renew cloud
-    [_user[@"JoinedGroups"] removeObject:groupId];
+    [_user[@"joinedGroups"] removeObject:groupId];
     [_user saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
         if (error) NSLog(@"Failed to renew cloud: %@", error.localizedDescription);
     }];
@@ -289,8 +283,8 @@ static BrainStormUser *sharedUser = nil;
     [_joinedGroups removeObject:willQuitGroup];
 }
 
-- (void)renewUserWithOption:(RenewUserOption)option
-          CompletionHandler:(RenewUserCompletionHandler _Nullable)handler {
+- (void)renewUserInBackgroundWithOption:(RenewUserOption)option
+                      completionHandler:(RenewUserCompletionHandler _Nullable)handler {
     if (!sharedUser) {
         if (handler) {
             NSInteger code = 0;
@@ -307,70 +301,89 @@ static BrainStormUser *sharedUser = nil;
         return;
     }
     
-    NSUInteger numTask = 0;
-    if (option >> 0 & 1) numTask++; // RenewJoinedGroups
-    if (option >> 1 & 1) numTask++; // RenewInvitedGroups
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(numTask);
+    dispatch_group_t group = dispatch_group_create();
+    dispatch_queue_t queue = dispatch_queue_create("com.lun.brainstormer.query", DISPATCH_QUEUE_CONCURRENT);
     
-    if (option >> 0 & 1) {
-        [_joinedGroups removeAllObjects];
-        
-        // fetch ids of joined groups
-        [_user fetchInBackgroundWithKeys:@[@"JoinedGroups"] block:^(AVObject * _Nullable object,
-                                                                    NSError * _Nullable error) {
-            if (error) {
-                NSLog(@"Failed to renew joined groups: %@", error.localizedDescription);
-                dispatch_semaphore_signal(semaphore);
-            } else {
-                // query details of each group
-                NSMutableArray *querys = [NSMutableArray array];
-                for (NSString *groupId in _user[@"JoinedGroups"]) {
-                    AVQuery *query = [AVQuery queryWithClassName:@"_Conversation"];
-                    [query whereKey:@"objectId" equalTo:groupId];
-                    [querys addObject:query];
-                }
-                
-                [AVObject fetchAllInBackground:querys block:^(NSArray * _Nullable objects,
-                                                              NSError * _Nullable error) {
-                    if (error) {
-                        NSLog(@"Failed to query joined groups: %@", error.localizedDescription);
-                    } else {
-                        for (AVObject *group in objects) {
-                            [_joinedGroups addObject:[BrainStormGroup groupWithId:group.objectId
-                                                                            topic:group[@"topic"]
-                                                                      creatorName:group[@"creatorName"]]];
-                        }
+    if (option >> 0 & 1 || option >> 1 & 1 || option >> 2 & 1) {
+        dispatch_group_enter(group);
+        dispatch_group_async(group, queue, ^{
+            NSMutableArray *fetchInfo = [NSMutableArray array];
+            if (option >> 0 & 1 || option >> 1 & 1) {
+                [fetchInfo addObject:@"friendsList"];
+                [_friendsList removeAllObjects];
+            }
+            if (option >> 0 & 1 || option >> 2 & 1) {
+                [fetchInfo addObject:@"joinedGroups"];
+                [_joinedGroups removeAllObjects];
+            }
+            
+            // fetch ids of joined groups
+            [_user fetchInBackgroundWithKeys:fetchInfo block:^(AVObject * _Nullable object,
+                                                               NSError * _Nullable error) {
+                if (error) {
+                    NSLog(@"Failed to renew joined groups: %@", error.localizedDescription);
+                    dispatch_group_leave(group);
+                } else {
+                    // store friends
+                    for (NSDictionary *people in _user[@"friendsList"]) {
+                        [_friendsList addObject:[BrainStormPeople peopleWithId:people[@"id"]
+                                                                          name:people[@"name"]]];
                     }
-                    dispatch_semaphore_signal(semaphore);
-                }];
-            }
-        }];
-    }
-    
-    if (option >> 1 & 1) {
-        [_invitedGroups removeAllObjects];
-        
-        // query invitations sent to the current user
-        AVQuery *query = [AVQuery queryWithClassName:@"Invitation"];
-        [query whereKey:@"InvitedId" equalTo:self.userId];
-        [query orderByDescending:@"createdAt"];
-        [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects,
-                                                  NSError * _Nullable error) {
-            if (error) {
-                NSLog(@"Failed to query invitations: %@", error.localizedDescription);
-            } else {
-                for (AVObject *group in objects) {
-                    [_invitedGroups addObject:[BrainStormGroup groupWithId:group[@"groupId"]
-                                                                     topic:group[@"topic"]
-                                                               creatorName:group[@"inviterName"]]];
+                    
+                    // query details of each group
+                    NSMutableArray *querys = [NSMutableArray array];
+                    for (NSString *groupId in _user[@"joinedGroups"]) {
+                        AVQuery *query = [AVQuery queryWithClassName:@"_Conversation"];
+                        [query whereKey:@"objectId" equalTo:groupId];
+                        [querys addObject:query];
+                    }
+                    
+                    [AVObject fetchAllInBackground:querys block:^(NSArray * _Nullable objects,
+                                                                  NSError * _Nullable error) {
+                        if (error) {
+                            NSLog(@"Failed to query joined groups: %@", error.localizedDescription);
+                        } else {
+                            for (AVObject *group in objects) {
+                                [_joinedGroups addObject:[BrainStormGroup groupWithId:group.objectId
+                                                                                topic:group[@"topic"]
+                                                                          creatorName:group[@"creatorName"]]];
+                            }
+                        }
+                        dispatch_group_leave(group);
+                    }];
                 }
-            }
-            dispatch_semaphore_signal(semaphore);
-        }];
+            }];
+        });
     }
     
-    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-    if (handler) handler(nil);
+    if (option >> 0 & 1 || option >> 3 & 1) {
+        dispatch_group_enter(group);
+        dispatch_group_async(group, queue, ^{
+            [_invitedGroups removeAllObjects];
+            
+            // query invitations sent to the current user
+            AVQuery *query = [AVQuery queryWithClassName:@"Invitation"];
+            [query whereKey:@"invitedId" equalTo:self.userId];
+            [query orderByDescending:@"createdAt"];
+            [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects,
+                                                      NSError * _Nullable error) {
+                if (error) {
+                    NSLog(@"Failed to query invitations: %@", error.localizedDescription);
+                } else {
+                    for (AVObject *group in objects) {
+                        [_invitedGroups addObject:[BrainStormGroup groupWithId:group[@"groupId"]
+                                                                         topic:group[@"topic"]
+                                                                   creatorName:group[@"inviterName"]]];
+                    }
+                }
+                dispatch_group_leave(group);
+            }];
+        });
+    }
+    
+    dispatch_group_notify(group, queue, ^{
+        if (handler) handler(nil);
+    });
 }
 
 @end

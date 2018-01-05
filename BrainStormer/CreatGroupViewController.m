@@ -11,7 +11,7 @@
 #import "InviteTableViewController.h"
 #import "CreatGroupViewController.h"
 
-@interface CreatGroupViewController () {
+@interface CreatGroupViewController () <UITextFieldDelegate> {
     NSArray<BrainStormPeople *> *_invitePeopleList;
 }
 
@@ -96,25 +96,30 @@
 
 - (IBAction)createGroup:(id)sender {
     if (_topic.text.length == 0) {
-        [self presentAlertWithTitle:@"Please enter the topic!" message:nil];
+        [self presentAlertWithTitle:@"Please enter a topic!" message:nil];
     } else {
         NSMutableArray *invitedIdList = [NSMutableArray array];
         for (BrainStormPeople *people in _invitePeopleList) {
             [invitedIdList addObject:people[BSPIdKey]];
         }
-        NSString *QRCodeString = [BrainStormUser.currentUser createGroupWithTopic:_topic.text
-                                                                    invitedIdList:invitedIdList];
-        if (QRCodeString) {
-            _invitePeopleList = [NSArray array];
-            _topic.text = @"";
-            [self setNames:nil];
-            
-            _QRImage.hidden = NO;
-            _QRImage.userInteractionEnabled = YES;
-            _QRImage.image = [self createQRForString:QRCodeString];
-        } else {
-            [self presentAlertWithTitle:@"Failed to create a group" message:@"See log"];
-        }
+        
+        __weak CreatGroupViewController *weakSelf = self;
+        [BrainStormUser.currentUser createGroupWithTopic:_topic.text
+                                           invitedIdList:invitedIdList
+                                       completionHandler:^(NSError * _Nullable error,
+                                                           NSString * _Nullable encrypted) {
+                                           if (error) {
+                                               [weakSelf presentAlertWithTitle:@"Failed to create a group" message:error.localizedDescription];
+                                           } else {
+                                               _invitePeopleList = [NSArray array];
+                                               _topic.text = @"";
+                                               [weakSelf setNames:nil];
+                                               
+                                               _QRImage.hidden = NO;
+                                               _QRImage.userInteractionEnabled = YES;
+                                               _QRImage.image = [self createQRForString:encrypted];
+                                           }
+                                       }];
     }
 }
 
@@ -160,6 +165,10 @@
     CGContextRelease(bitmapRef);
     CGImageRelease(bitmapImage);
     return [UIImage imageWithCGImage:scaledImage];
+}
+
+- (void)touchesBegan:(NSSet*)touches withEvent:(UIEvent *)event {
+    [self.view endEditing:YES];
 }
 
 - (void)presentAlertWithTitle:(NSString *)title message:(NSString *)message {

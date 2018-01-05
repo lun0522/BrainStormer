@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@class BrainStormPeople;
-
 typedef void (^SelectPeopleCallback)(NSArray<BrainStormPeople *> * _Nullable peopleList,
                                      NSString * _Nullable names);
 

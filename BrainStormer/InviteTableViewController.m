@@ -7,6 +7,7 @@
 //
 
 #import "BrainStormEntity.h"
+#import "InviteTableViewCell.h"
 #import "InviteTableViewController.h"
 
 @interface InviteTableViewController () {
@@ -76,38 +77,23 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSUInteger row = indexPath.row;
-    
-    static NSString * CellIdentifier = @"CellIdentifier";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    cell = [[[NSBundle mainBundle] loadNibNamed:@"InviteTableViewCell" owner:nil options:nil] firstObject];
-    
-    cell.userInteractionEnabled = YES;
-    UILabel *name = (UILabel *)[cell viewWithTag:1];
-    name.text = BrainStormUser.currentUser.friendsList[row][BSPNameKey];
-    UIImageView *invitedIcon = (UIImageView *)[cell viewWithTag:2];
-    UILabel *uid = (UILabel *)[cell viewWithTag:3];
-    uid.text = BrainStormUser.currentUser.friendsList[row][BSPIdKey];
-    
-    uid.hidden = YES;
-    invitedIcon.hidden = [_selectedList containsObject:[BrainStormPeople peopleWithId:uid.text
-                                                                                 name:name.text]];
-    invitedIcon.image = [UIImage imageNamed:@"invited.png"];
+    InviteTableViewCell *cell = [[[NSBundle mainBundle] loadNibNamed:@"InviteTableViewCell" owner:nil options:nil] firstObject];
+    cell.name.text = BrainStormUser.currentUser.friendsList[row][BSPNameKey];
+    cell.invited.image = [UIImage imageNamed:@"invited.png"];
+    cell.invited.hidden = ![_selectedList containsObject:BrainStormUser.currentUser.friendsList[row]];
     
     return cell;
 }
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    UILabel *name = (UILabel *)[cell viewWithTag:1];
-    UIImageView *invitedIcon = (UIImageView *)[cell viewWithTag:2];
-    UILabel *uid = (UILabel *)[cell viewWithTag:3];
-    BrainStormPeople *selectedPeople = [BrainStormPeople peopleWithId:uid.text
-                                                                 name:name.text];
     
-    if (invitedIcon.hidden) [_selectedList addObject:selectedPeople];
-    else [_selectedList removeObject:selectedPeople];
-    invitedIcon.hidden = !invitedIcon.hidden;
+    BrainStormPeople *selectedPeople = BrainStormUser.currentUser.friendsList[indexPath.row];
+    if ([_selectedList containsObject:selectedPeople]) [_selectedList removeObject:selectedPeople];
+    else [_selectedList addObject:selectedPeople];
+    
+    InviteTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    cell.invited.hidden = !cell.invited.hidden;
 }
 
 @end

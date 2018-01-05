@@ -21,12 +21,12 @@
 
 @end
 
-typedef void (^RenewUserCompletionHandler)(NSError * _Nullable error);
-
 extern NSString * _Nonnull const BSPIdKey;
 extern NSString * _Nonnull const BSPNameKey;
 
-@interface BrainStormPeople : NSDictionary
+typedef NSDictionary BrainStormPeople;
+
+@interface NSDictionary (people)
 
 - (instancetype _Nonnull)init NS_UNAVAILABLE;
 + (BrainStormPeople * _Nonnull)peopleWithId:(NSString * _Nonnull)uid
@@ -37,9 +37,14 @@ extern NSString * _Nonnull const BSPNameKey;
 @class UIViewController;
 
 typedef NS_OPTIONS(NSInteger, RenewUserOption) {
-    RenewJoinedGroups  = 1 << 0,
-    RenewInvitedGroups = 1 << 1,
+    RenewAllInfo       = 1 << 0,
+    RenewFriendsList   = 1 << 1,
+    RenewJoinedGroups  = 1 << 2,
+    RenewInvitedGroups = 1 << 3,
 };
+
+typedef void (^CreateGroupCompletionHandler)(NSError * _Nullable error, NSString * _Nullable encrypted);
+typedef void (^RenewUserCompletionHandler)(NSError * _Nullable error);
 
 @interface BrainStormUser : NSObject
 
@@ -56,11 +61,12 @@ typedef NS_OPTIONS(NSInteger, RenewUserOption) {
 - (NSArray<BrainStormGroup *> * _Nonnull)invitedGroups;
 - (NSArray<BrainStormPeople *> * _Nonnull)friendsList;
 
-- (NSString * _Nullable)createGroupWithTopic:(NSString * _Nonnull)topic
-                               invitedIdList:(NSArray<NSString *> * _Nonnull) idList;
+- (void)createGroupWithTopic:(NSString * _Nonnull)topic
+               invitedIdList:(NSArray<NSString *> * _Nonnull)idList
+           completionHandler:(CreateGroupCompletionHandler _Nonnull)handler;
 - (UIViewController * _Nullable)joinGroupWithId:(NSString * _Nonnull)groupId;
 - (void)quitGroupWithId:(NSString * _Nonnull)groupId;
-- (void)renewUserWithOption:(RenewUserOption)option
-          CompletionHandler:(RenewUserCompletionHandler _Nullable)handler;
+- (void)renewUserInBackgroundWithOption:(RenewUserOption)option
+                      completionHandler:(RenewUserCompletionHandler _Nullable)handler;
 
 @end

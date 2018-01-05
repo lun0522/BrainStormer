@@ -89,10 +89,6 @@
 		BD2DE8261D9EA8ED00F33477 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		BD2DE8271D9EA8ED00F33477 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		BD2DE82C1D9ED0BB00F33477 /* brainstorm.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brainstorm.jpg; sourceTree = "<group>"; };
-		BD4A373A1F51E7D600A04F3F /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = ../../../Documents/FacebookSDK/Bolts.framework; sourceTree = "<group>"; };
-		BD4A373B1F51E7D600A04F3F /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../../Documents/FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
-		BD4A373C1F51E7D600A04F3F /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../../../Documents/FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
-		BD4A373D1F51E7D600A04F3F /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../../../Documents/FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		BD55F0C81D9FDE9E00D3D2DF /* CreatGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreatGroupViewController.h; sourceTree = "<group>"; };
 		BD55F0C91D9FDE9E00D3D2DF /* CreatGroupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreatGroupViewController.m; sourceTree = "<group>"; };
 		BD55F0CB1DA0027800D3D2DF /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
@@ -170,10 +166,6 @@
 		52CEB7A314BC2898DB954215 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				BD4A373A1F51E7D600A04F3F /* Bolts.framework */,
-				BD4A373B1F51E7D600A04F3F /* FBSDKCoreKit.framework */,
-				BD4A373C1F51E7D600A04F3F /* FBSDKLoginKit.framework */,
-				BD4A373D1F51E7D600A04F3F /* FBSDKShareKit.framework */,
 				BD55F0CD1DA00DAC00D3D2DF /* Security.framework */,
 				BD55F0CB1DA0027800D3D2DF /* Photos.framework */,
 				BD6474A21D9FBD7100A419D1 /* MJRefresh */,
