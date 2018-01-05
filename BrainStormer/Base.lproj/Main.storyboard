@@ -119,14 +119,14 @@
                     </view>
                     <connections>
                         <outlet property="QRImage" destination="cYR-5s-UYj" id="Vei-EO-7PX"/>
-                        <outlet property="invitePeople" destination="Yut-du-nVh" id="uQN-XC-vGo"/>
+                        <outlet property="namesText" destination="Yut-du-nVh" id="WtL-a2-Fi6"/>
                         <outlet property="topic" destination="Nfz-Gg-60Z" id="fek-0K-oTW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SGh-Fk-Qu0" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="yuP-jk-Zck">
                     <connections>
-                        <action selector="tapQR:" destination="fLH-ZV-Kaw" id="a9o-U8-85i"/>
+                        <action selector="tapQRCode:" destination="fLH-ZV-Kaw" id="a9o-U8-85i"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
@@ -198,16 +198,20 @@
                                     <action selector="ShowFile:" destination="is0-CJ-wo3" eventType="touchUpInside" id="Be7-Vc-aOo"/>
                                 </connections>
                             </button>
-                            <webView contentMode="scaleToFill" fixedFrame="YES" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rTt-n4-6au">
-                                <rect key="frame" x="14" y="118" width="345" height="529"/>
+                            <wkWebView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qtU-SQ-e28">
+                                <rect key="frame" x="16" y="118" width="343" height="529"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </webView>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
-                        <outlet property="Webview" destination="rTt-n4-6au" id="b4f-dO-kVW"/>
+                        <outlet property="webView" destination="qtU-SQ-e28" id="ArX-FJ-kMA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Oog-dB-90k" userLabel="First Responder" sceneMemberID="firstResponder"/>

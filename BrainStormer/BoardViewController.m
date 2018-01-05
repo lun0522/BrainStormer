@@ -8,7 +8,7 @@
 
 #import "BoardViewController.h"
 
-@interface BoardViewController ()
+@interface BoardViewController () <UIPopoverPresentationControllerDelegate>
 
 @end
 

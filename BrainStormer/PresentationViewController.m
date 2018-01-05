@@ -10,6 +10,9 @@
 
 @interface PresentationViewController ()
 
+@property (weak, nonatomic) IBOutlet WKWebView *webView;
+- (IBAction)ShowFile:(id)sender;
+
 @end
 
 @implementation PresentationViewController
@@ -20,7 +23,7 @@
 - (IBAction)ShowFile:(id)sender {
     NSURL *targetURL = [NSURL URLWithString:@"https://www.ics.uci.edu/~corps/phaseii/DiMaggioPowell-IronCageRevisited-ASR.pdf"];
     NSURLRequest *request = [NSURLRequest requestWithURL:targetURL];
-    [self.Webview loadRequest:request];
+    [_webView loadRequest:request];
 }
 
 - (void)didReceiveMemoryWarning {

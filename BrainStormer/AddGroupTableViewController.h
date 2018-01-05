@@ -17,6 +17,7 @@ typedef void (^AddGroupOptionCallback)(AddGroupOption option);
 
 @interface AddGroupTableViewController : UITableViewController
 
-- (instancetype _Nonnull)initWithCallback:(AddGroupOptionCallback _Nullable)callback NS_DESIGNATED_INITIALIZER;
+- (instancetype _Nonnull)init NS_UNAVAILABLE;
+- (instancetype _Nonnull)initWithCallback:(AddGroupOptionCallback _Nullable)callback;
 
 @end

@@ -136,10 +136,6 @@
 		BDED02351DA664D8003DAEE4 /* dqd_arrowhead+UIBezierPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "dqd_arrowhead+UIBezierPath.m"; sourceTree = "<group>"; };
 		BDED02371DA670CA003DAEE4 /* Arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Arrow.png; sourceTree = "<group>"; };
 		BDED02381DA670CA003DAEE4 /* unarrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unarrow.png; sourceTree = "<group>"; };
-		BDEDBBC31F51ECB100DF116E /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = ../../../../Documents/FacebookSDK/Bolts.framework; sourceTree = "<group>"; };
-		BDEDBBC41F51ECB100DF116E /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ../../../../Documents/FacebookSDK/FBSDKCoreKit.framework; sourceTree = "<group>"; };
-		BDEDBBC51F51ECB100DF116E /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = ../../../../Documents/FacebookSDK/FBSDKLoginKit.framework; sourceTree = "<group>"; };
-		BDEDBBC61F51ECB100DF116E /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ../../../../Documents/FacebookSDK/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		BFF344B3DB490AF49DA0322E /* Pods-BrainStormer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BrainStormer.release.xcconfig"; path = "Pods/Target Support Files/Pods-BrainStormer/Pods-BrainStormer.release.xcconfig"; sourceTree = "<group>"; };
 		D4F493E97EF786D3E9D444C1 /* libPods-BrainStormer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BrainStormer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBD768C80E32182B6A5523EB /* Pods-BrainStormer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BrainStormer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BrainStormer/Pods-BrainStormer.debug.xcconfig"; sourceTree = "<group>"; };
@@ -233,12 +229,11 @@
 				BD11C3971F521D5B00DDA188 /* Utils */,
 				BD55F10E1DA40F0800D3D2DF /* AddGroupControllers */,
 				BD55F10F1DA40F2300D3D2DF /* GroupRoomControllers */,
-				BDEDBBC21F51EC7D00DF116E /* Frameworks */,
-				BD2DE7F81D9EA75700F33477 /* Assets.xcassets */,
+				BD2DE82B1D9ED0A600F33477 /* Images */,
 				BD2DE7F51D9EA75700F33477 /* Main.storyboard */,
 				BD2DE7FA1D9EA75700F33477 /* LaunchScreen.storyboard */,
 				BD2DE7FD1D9EA75700F33477 /* Info.plist */,
-				BD2DE82B1D9ED0A600F33477 /* Images */,
+				BD2DE7F81D9EA75700F33477 /* Assets.xcassets */,
 				BD2DE7EC1D9EA75700F33477 /* Supporting Files */,
 			);
 			path = BrainStormer;
@@ -330,17 +325,6 @@
 			name = GroupRoomControllers;
 			sourceTree = "<group>";
 		};
-		BDEDBBC21F51EC7D00DF116E /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				BDEDBBC31F51ECB100DF116E /* Bolts.framework */,
-				BDEDBBC41F51ECB100DF116E /* FBSDKCoreKit.framework */,
-				BDEDBBC51F51ECB100DF116E /* FBSDKLoginKit.framework */,
-				BDEDBBC61F51ECB100DF116E /* FBSDKShareKit.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		CDEAB60D51A844943D65FC22 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -415,7 +399,7 @@
 		BD2DE7E11D9EA75700F33477 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = "\bLun";
 				TargetAttributes = {
 					BD2DE7E81D9EA75700F33477 = {
@@ -651,7 +635,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -659,7 +645,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
@@ -700,7 +690,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -708,7 +700,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;

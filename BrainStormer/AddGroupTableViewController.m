@@ -17,7 +17,7 @@
 @implementation AddGroupTableViewController
 
 - (instancetype)initWithCallback:(void (^)(AddGroupOption option))callback {
-    if (self = [super init]) {
+    if (self = [super initWithStyle:UITableViewStylePlain]) {
         _callback = callback;
     }
     return self;

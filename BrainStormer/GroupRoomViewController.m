@@ -8,7 +8,7 @@
 
 #import "GroupRoomViewController.h"
 
-@interface GroupRoomViewController () {
+@interface GroupRoomViewController () <UIPopoverPresentationControllerDelegate> {
     NSArray *ViewControllers;
     NSArray *SegmentedTitles;
     UISegmentedControl *SegmentedControl;

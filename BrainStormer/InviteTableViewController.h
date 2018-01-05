@@ -10,7 +10,8 @@
 
 @class BrainStormPeople;
 
-typedef void (^SelectPeopleCallback)(NSArray<BrainStormPeople *> * _Nullable peopleList);
+typedef void (^SelectPeopleCallback)(NSArray<BrainStormPeople *> * _Nullable peopleList,
+                                     NSString * _Nullable names);
 
 @interface InviteTableViewController : UITableViewController
 

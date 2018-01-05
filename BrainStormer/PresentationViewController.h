@@ -7,10 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <WebKit/WebKit.h>
 
 @interface PresentationViewController : UIViewController
-
-- (IBAction)ShowFile:(id)sender;
-@property (weak, nonatomic) IBOutlet UIWebView *Webview;
 
 @end

@@ -36,6 +36,11 @@ extern NSString * _Nonnull const BSPNameKey;
 
 @class UIViewController;
 
+typedef NS_OPTIONS(NSInteger, RenewUserOption) {
+    RenewJoinedGroups  = 1 << 0,
+    RenewInvitedGroups = 1 << 1,
+};
+
 @interface BrainStormUser : NSObject
 
 - (instancetype _Nonnull)init NS_UNAVAILABLE;
@@ -45,12 +50,17 @@ extern NSString * _Nonnull const BSPNameKey;
 - (void)logout;
 
 - (NSString * _Nonnull)userId;
+- (NSString * _Nonnull)userName;
+- (NSString * _Nonnull)avatarFile;
 - (NSArray<BrainStormGroup *> * _Nonnull)joinedGroups;
 - (NSArray<BrainStormGroup *> * _Nonnull)invitedGroups;
 - (NSArray<BrainStormPeople *> * _Nonnull)friendsList;
 
+- (NSString * _Nullable)createGroupWithTopic:(NSString * _Nonnull)topic
+                               invitedIdList:(NSArray<NSString *> * _Nonnull) idList;
 - (UIViewController * _Nullable)joinGroupWithId:(NSString * _Nonnull)groupId;
 - (void)quitGroupWithId:(NSString * _Nonnull)groupId;
-- (void)renewUserWithCompletionHandler:(RenewUserCompletionHandler _Nullable)handler;
+- (void)renewUserWithOption:(RenewUserOption)option
+          CompletionHandler:(RenewUserCompletionHandler _Nullable)handler;
 
 @end

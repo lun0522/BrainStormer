@@ -50,13 +50,17 @@
 
 - (void)cancelAction:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
-    _callback(nil);
+    _callback(nil, nil);
     _callback = nil;
 }
 
 - (void)doneAction:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
-    _callback(_selectedList.copy);
+    NSString *names = @"";
+    for (BrainStormPeople *people in _selectedList) {
+        names = [names stringByAppendingString:people[BSPNameKey]];
+    }
+    _callback(_selectedList.copy, names);
     _callback = nil;
 }
 

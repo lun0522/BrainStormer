@@ -169,9 +169,10 @@
     }
 }
 
-- (void)refreshTableWithCompletionHandler:(void (^)())handler {
+- (void)refreshTableWithCompletionHandler:(void (^)(void))handler {
     __weak GroupListViewController *weakSelf = self;
-    [BrainStormUser.currentUser renewUserWithCompletionHandler:^(NSError * _Nullable error) {
+    [BrainStormUser.currentUser renewUserWithOption:RenewJoinedGroups | RenewInvitedGroups
+                                  CompletionHandler:^(NSError * _Nullable error) {
         if (error) NSLog(@"Failed to refresh: %@", error.localizedDescription);
         else [weakSelf.tableView reloadData];
         handler();
