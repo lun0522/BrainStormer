@@ -16,7 +16,8 @@ def create_group(**params):
     # create a conversation
     conversation = leancloud.Conversation()
     conversation.set("name", params["topic"])
-    conversation.set("creator", params["creatorId"])
+    conversation.set("creatorId", params["creatorId"])
+    conversation.set("creatorName", params["creatorName"])
     conversation.set("members", [params["creatorId"]])
     conversation.save()
     
@@ -29,7 +30,7 @@ def create_group(**params):
             invitation.set("invitedId", uid)
             invitation.set("groupId", conversation.id)
             invitation.set("topic", params["topic"])
-            invitation.set("inviterName", params["inviterName"])
+            invitation.set("inviterName", params["creatorName"])
             invitation.save()
     
     # return QR code string

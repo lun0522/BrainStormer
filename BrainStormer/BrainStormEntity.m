@@ -42,6 +42,18 @@
     return group.groupId == _groupId && group.topic == _topic && group.creatorName == _creatorName;
 }
 
+- (NSString *)debugDescription {
+    return [NSString stringWithFormat:@"<%@: %p, %@>",
+            self,
+            [self class],
+            @{
+              @"id": _groupId,
+              @"topic": _topic,
+              @"creator": _creatorName,
+              }
+            ];
+}
+
 @end
 
 @implementation NSDictionary (people)
@@ -61,6 +73,17 @@ NSString *const BSPNameKey = @"name";
 - (BOOL)isEqual:(id)object {
     if (![object isMemberOfClass:[self class]]) return NO;
     return object[BSPIdKey] == self[BSPIdKey];
+}
+
+- (NSString *)debugDescription {
+    return [NSString stringWithFormat:@"<%@: %p, %@>",
+            self,
+            [self class],
+            @{
+              @"id": self[BSPIdKey],
+              @"name": self[BSPNameKey],
+              }
+            ];
 }
 
 @end
@@ -107,46 +130,24 @@ static BrainStormUser *sharedUser = nil;
         _friendsList = [NSMutableArray array];
         _joinedGroups = [NSMutableArray array];
         _invitedGroups = [NSMutableArray array];
-        
         [ChatKitUtils userDidLoginWithId:_user.objectId];
-        [self getAvatarFromURL:_user[@"avatarUrl"]];
-        [self renewUserInBackgroundWithOption:RenewJoinedGroups | RenewInvitedGroups
-                            completionHandler:^(NSError * _Nullable error) {
-                                if (error) NSLog(@"Failed to renew: %@", error.localizedDescription);
-                            }];
+        [self getAvatarFromURL:_user[@"avatarUrl"]
+              saveWithFilename:_user[@"avatarFilename"]];
+        
         return self;
     }
 }
 
-- (void)getAvatarFromURL:(NSString *)url {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
-    NSString *file = [url substringWithRange:NSMakeRange(31, 23)];
-    NSString *filename = [file stringByAppendingString:@".jpg"];
-    NSString *uniquePath=[paths[0] stringByAppendingPathComponent:filename];
-    BOOL isDownloaded = [[NSFileManager defaultManager] fileExistsAtPath:uniquePath];
-    if (!isDownloaded) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            UIImage *avatar = [self downloadImageFromURL:url];
-            NSString * documentsDirectoryPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
-            [self saveImage:avatar withFileName:file ofType:@"jpg" inDirectory:documentsDirectoryPath];
-        });
-    }
+- (void)getAvatarFromURL:(NSString *)url saveWithFilename:(NSString *)filename {
+    NSString *filePath = [self getFilePathWithFilename:filename];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) return;
+    UIImage *avatar = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:url]]];
+    [UIImageJPEGRepresentation(avatar, 1.0) writeToFile:filePath options:NSAtomicWrite error:nil];
 }
 
-- (UIImage *)downloadImageFromURL:(NSString *)url {
-    NSLog(@"Downloading image");
-    return [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:url]]];
-}
-
-- (void)saveImage:(UIImage *)image
-     withFileName:(NSString *)imageName
-           ofType:(NSString *)extension
-      inDirectory:(NSString *)directoryPath {
-    if ([[extension lowercaseString] isEqualToString:@"jpg"] || [[extension lowercaseString] isEqualToString:@"jpeg"]) {
-        [UIImageJPEGRepresentation(image, 1.0) writeToFile:[directoryPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@", imageName, @"jpg"]] options:NSAtomicWrite error:nil];
-    } else {
-        NSLog(@"Not jpg");
-    }
+- (NSString *)getFilePathWithFilename:(NSString *)filename {
+    NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES)[0];
+    return [path stringByAppendingPathComponent:filename];
 }
 
 + (BrainStormUser * _Nullable)currentUser {
@@ -168,8 +169,8 @@ static BrainStormUser *sharedUser = nil;
     return _user.username.copy;
 }
 
-- (NSString * _Nonnull)avatarFile {
-    return [[_user[@"avatarUrl"] substringWithRange:NSMakeRange(31, 23)] stringByAppendingString:@".jpg"];
+- (NSString * _Nonnull)avatarFilePath {
+    return [self getFilePathWithFilename:_user[@"avatarFilename"]];
 }
 
 - (NSArray<BrainStormGroup *> * _Nonnull)joinedGroups {
@@ -177,7 +178,7 @@ static BrainStormUser *sharedUser = nil;
 }
 
 - (NSArray<BrainStormGroup *> * _Nonnull)invitedGroups {
-    return _joinedGroups.copy;
+    return _invitedGroups.copy;
 }
 
 - (NSArray<BrainStormPeople *> * _Nonnull)friendsList {
@@ -191,7 +192,7 @@ static BrainStormUser *sharedUser = nil;
     NSDictionary *params = @{
                              @"topic": topic,
                              @"creatorId": BrainStormUser.currentUser.userId,
-                             @"inviterName": _user.username,
+                             @"creatorName": _user.username,
                              @"invitedId": idList,
                              @"timestamp": [NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]],
                              };
@@ -205,7 +206,8 @@ static BrainStormUser *sharedUser = nil;
                                         NSString *encrypted = object[@"encrypted"];
                                         
                                         // renew cloud
-                                        [_user[@"joinedGroups"] addObject:newGroupId];
+                                        if (_user[@"joinedGroups"]) [_user[@"joinedGroups"] addObject:newGroupId];
+                                        else _user[@"joinedGroups"] = @[newGroupId].mutableCopy;
                                         [_user saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
                                             if (error) NSLog(@"Failed to renew cloud: %@", error.localizedDescription);
                                         }];
@@ -301,18 +303,22 @@ static BrainStormUser *sharedUser = nil;
         return;
     }
     
-    dispatch_group_t group = dispatch_group_create();
-    dispatch_queue_t queue = dispatch_queue_create("com.lun.brainstormer.query", DISPATCH_QUEUE_CONCURRENT);
+    dispatch_group_t dispatchGroup = dispatch_group_create();
+    dispatch_queue_t dispatchQueue = dispatch_queue_create("com.lun.brainstormer.query", DISPATCH_QUEUE_CONCURRENT);
     
-    if (option >> 0 & 1 || option >> 1 & 1 || option >> 2 & 1) {
-        dispatch_group_enter(group);
-        dispatch_group_async(group, queue, ^{
+    BOOL renewFriendsList   = option >> 0 & 1 || option >> 1 & 1;
+    BOOL renewJoinedGroups  = option >> 0 & 1 || option >> 2 & 1;
+    BOOL renewInvitedGroups = option >> 0 & 1 || option >> 3 & 1;
+    
+    if (renewFriendsList || renewJoinedGroups) {
+        dispatch_group_enter(dispatchGroup);
+        dispatch_group_async(dispatchGroup, dispatchQueue, ^{
             NSMutableArray *fetchInfo = [NSMutableArray array];
-            if (option >> 0 & 1 || option >> 1 & 1) {
+            if (renewFriendsList) {
                 [fetchInfo addObject:@"friendsList"];
                 [_friendsList removeAllObjects];
             }
-            if (option >> 0 & 1 || option >> 2 & 1) {
+            if (renewJoinedGroups) {
                 [fetchInfo addObject:@"joinedGroups"];
                 [_joinedGroups removeAllObjects];
             }
@@ -322,43 +328,47 @@ static BrainStormUser *sharedUser = nil;
                                                                NSError * _Nullable error) {
                 if (error) {
                     NSLog(@"Failed to renew joined groups: %@", error.localizedDescription);
-                    dispatch_group_leave(group);
+                    dispatch_group_leave(dispatchGroup);
                 } else {
-                    // store friends
-                    for (NSDictionary *people in _user[@"friendsList"]) {
-                        [_friendsList addObject:[BrainStormPeople peopleWithId:people[@"id"]
-                                                                          name:people[@"name"]]];
-                    }
-                    
-                    // query details of each group
-                    NSMutableArray *querys = [NSMutableArray array];
-                    for (NSString *groupId in _user[@"joinedGroups"]) {
-                        AVQuery *query = [AVQuery queryWithClassName:@"_Conversation"];
-                        [query whereKey:@"objectId" equalTo:groupId];
-                        [querys addObject:query];
-                    }
-                    
-                    [AVObject fetchAllInBackground:querys block:^(NSArray * _Nullable objects,
-                                                                  NSError * _Nullable error) {
-                        if (error) {
-                            NSLog(@"Failed to query joined groups: %@", error.localizedDescription);
-                        } else {
-                            for (AVObject *group in objects) {
-                                [_joinedGroups addObject:[BrainStormGroup groupWithId:group.objectId
-                                                                                topic:group[@"topic"]
-                                                                          creatorName:group[@"creatorName"]]];
-                            }
+                    if (renewFriendsList) {
+                        // store friends
+                        for (NSDictionary *people in _user[@"friendsList"]) {
+                            [_friendsList addObject:[BrainStormPeople peopleWithId:people[@"id"]
+                                                                              name:people[@"name"]]];
                         }
-                        dispatch_group_leave(group);
-                    }];
+                    }
+                    
+                    if (renewJoinedGroups) {
+                        // query details of each group
+                        NSMutableArray *querys = [NSMutableArray array];
+                        for (NSString *groupId in _user[@"joinedGroups"]) {
+                            AVObject *conversation = [AVObject objectWithClassName:@"_Conversation"
+                                                                          objectId:groupId];
+                            [querys addObject:conversation];
+                        }
+                        
+                        [AVObject fetchAllInBackground:querys block:^(NSArray * _Nullable objects,
+                                                                      NSError * _Nullable error) {
+                            if (error) {
+                                NSLog(@"Failed to query joined groups: %@", error.localizedDescription);
+                            } else {
+                                for (AVObject *group in objects) {
+                                    [_joinedGroups addObject:[BrainStormGroup groupWithId:group.objectId
+                                                                                    topic:group[@"name"]
+                                                                              creatorName:group[@"creatorName"]]];
+                                }
+                            }
+                            dispatch_group_leave(dispatchGroup);
+                        }];
+                    }
                 }
             }];
         });
     }
     
-    if (option >> 0 & 1 || option >> 3 & 1) {
-        dispatch_group_enter(group);
-        dispatch_group_async(group, queue, ^{
+    if (renewInvitedGroups) {
+        dispatch_group_enter(dispatchGroup);
+        dispatch_group_async(dispatchGroup, dispatchQueue, ^{
             [_invitedGroups removeAllObjects];
             
             // query invitations sent to the current user
@@ -376,12 +386,12 @@ static BrainStormUser *sharedUser = nil;
                                                                    creatorName:group[@"inviterName"]]];
                     }
                 }
-                dispatch_group_leave(group);
+                dispatch_group_leave(dispatchGroup);
             }];
         });
     }
     
-    dispatch_group_notify(group, queue, ^{
+    dispatch_group_notify(dispatchGroup, dispatchQueue, ^{
         if (handler) handler(nil);
     });
 }

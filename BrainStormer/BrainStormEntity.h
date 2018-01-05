@@ -37,10 +37,10 @@ typedef NSDictionary BrainStormPeople;
 @class UIViewController;
 
 typedef NS_OPTIONS(NSInteger, RenewUserOption) {
-    RenewAllInfo       = 1 << 0,
-    RenewFriendsList   = 1 << 1,
-    RenewJoinedGroups  = 1 << 2,
-    RenewInvitedGroups = 1 << 3,
+    BSURenewAllInfo       = 1 << 0,
+    BSURenewFriendsList   = 1 << 1,
+    BSURenewJoinedGroups  = 1 << 2,
+    BSURenewInvitedGroups = 1 << 3,
 };
 
 typedef void (^CreateGroupCompletionHandler)(NSError * _Nullable error, NSString * _Nullable encrypted);
@@ -56,7 +56,7 @@ typedef void (^RenewUserCompletionHandler)(NSError * _Nullable error);
 
 - (NSString * _Nonnull)userId;
 - (NSString * _Nonnull)userName;
-- (NSString * _Nonnull)avatarFile;
+- (NSString * _Nonnull)avatarFilePath;
 - (NSArray<BrainStormGroup *> * _Nonnull)joinedGroups;
 - (NSArray<BrainStormGroup *> * _Nonnull)invitedGroups;
 - (NSArray<BrainStormPeople *> * _Nonnull)friendsList;

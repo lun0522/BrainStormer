@@ -65,7 +65,9 @@
             case PHAuthorizationStatusNotDetermined: {
                     [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus authStatus) {
                         if (authStatus == PHAuthorizationStatusAuthorized) {
-                            UIImageWriteToSavedPhotosAlbum(_QRImage.image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                UIImageWriteToSavedPhotosAlbum(_QRImage.image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+                            });
                         } else {
                             [self presentAlertWithTitle:@"Failed to save QR code..." message:@"No permission to access album"];
                         }
@@ -111,6 +113,8 @@
                                            if (error) {
                                                [weakSelf presentAlertWithTitle:@"Failed to create a group" message:error.localizedDescription];
                                            } else {
+                                               [weakSelf presentAlertWithTitle:@"Success!" message:@"Please tap the QR code to save"];
+                                               
                                                _invitePeopleList = [NSArray array];
                                                _topic.text = @"";
                                                [weakSelf setNames:nil];
@@ -129,10 +133,8 @@
     NSData *stringData = [string dataUsingEncoding:NSUTF8StringEncoding];
     [filter setValue:stringData forKey:@"inputMessage"];
     CIImage *ciImage = filter.outputImage;
-    UIImage *rawQRImage = [self nonInterpolatedUIImageFormCIImage:ciImage expectedSize:200];
-    
-    NSString *directoryPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    UIImage *avatarImage = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@", directoryPath, BrainStormUser.currentUser.avatarFile]];
+    UIImage *rawQRImage = [self nonInterpolatedUIImageFormCIImage:ciImage expectedSize:300];
+    UIImage *avatarImage = [UIImage imageWithContentsOfFile:BrainStormUser.currentUser.avatarFilePath];
     
     UIGraphicsBeginImageContext(rawQRImage.size);
     [rawQRImage drawInRect:CGRectMake(0, 0, rawQRImage.size.width, rawQRImage.size.height)];

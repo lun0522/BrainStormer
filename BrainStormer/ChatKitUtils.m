@@ -65,7 +65,7 @@
                                                  LCCKUser *user =
                                                  [LCCKUser userWithUserId:uid
                                                                      name:object[@"username"]
-                                                                avatarURL:object[@"avatarURL"]];
+                                                                avatarURL:object[@"avatarUrl"]];
                                                  [targetUsers addObject:user];
                                                  dispatch_semaphore_signal(semaphore);
                 }];

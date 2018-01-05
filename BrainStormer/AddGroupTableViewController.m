@@ -76,8 +76,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self dismissViewControllerAnimated:NO completion:nil];
     if (_callback) {
-        if (indexPath.row == 0) _callback(JoinGroup);
-        else _callback(CreateGroup);
+        if (indexPath.row == 0) _callback(AGJoinGroup);
+        else _callback(AGCreateGroup);
         _callback = nil;
     }
 }

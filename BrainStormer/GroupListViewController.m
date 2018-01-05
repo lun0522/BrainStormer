@@ -20,6 +20,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self refreshTableWithCompletionHandler:nil];
     [self setNaviItem];
     [self setRefresher];
 }
@@ -52,10 +53,6 @@
                   forControlEvents:UIControlEventValueChanged];
 }
 
-- (void)GroupCreated:(NSNotification *) notification {
-    [self refreshTableWithCompletionHandler:nil];
-}
-
 - (void)Logout:(id)sender {
     [BrainStormUser.currentUser logout];
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -66,8 +63,8 @@
     AddGroupTableViewController *tvc = [[AddGroupTableViewController alloc] initWithCallback:^(AddGroupOption option) {
         UIViewController *vc;
         
-        if (option == JoinGroup) vc = [self.storyboard instantiateViewControllerWithIdentifier:@"JoinGroup"];
-        else if (option == CreateGroup) vc = [self.storyboard instantiateViewControllerWithIdentifier:@"CreateGroup"];
+        if (option == AGJoinGroup) vc = [self.storyboard instantiateViewControllerWithIdentifier:@"JoinGroup"];
+        else if (option == AGCreateGroup) vc = [self.storyboard instantiateViewControllerWithIdentifier:@"CreateGroup"];
         else NSLog(@"Unknown add group option!");
         
         if (vc) [weakSelf.navigationController pushViewController:vc animated:YES];
@@ -96,30 +93,32 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSUInteger row = indexPath.row;
+    NSUInteger joinedGroupsCount = BrainStormUser.currentUser.joinedGroups.count;
+    NSUInteger invitedGroupsCount = BrainStormUser.currentUser.invitedGroups.count;
     
     static NSString * CellIdentifier = @"CellIdentifier";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
-    if (BrainStormUser.currentUser.invitedGroups.count != 0 && row < BrainStormUser.currentUser.invitedGroups.count) {
+    if (joinedGroupsCount != 0 && row < joinedGroupsCount) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-        cell.userInteractionEnabled = YES;
         cell.imageView.image = [UIImage imageNamed:@"bulb.png"];
-        cell.textLabel.text = BrainStormUser.currentUser.invitedGroups[row].topic;
-        cell.detailTextLabel.text = [@"Created by " stringByAppendingString:BrainStormUser.currentUser.invitedGroups[row].creatorName];
-    } else if (BrainStormUser.currentUser.invitedGroups.count != 0 && row < BrainStormUser.currentUser.invitedGroups.count + BrainStormUser.currentUser.invitedGroups.count) {
+        cell.textLabel.text = BrainStormUser.currentUser.joinedGroups[row].topic;
+        cell.detailTextLabel.text = [@"Created by " stringByAppendingString:BrainStormUser.currentUser.joinedGroups[row].creatorName];
+    } else if (invitedGroupsCount != 0 && row < joinedGroupsCount + invitedGroupsCount) {
+        NSUInteger idx = row - joinedGroupsCount;
         cell = [[[NSBundle mainBundle] loadNibNamed:@"InvitationLetterViewCell" owner:nil options:nil] firstObject];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        UILabel *joinedTopicLabel = (UILabel *)[cell viewWithTag:1];
-        joinedTopicLabel.text = [@"【Invitation】" stringByAppendingString:BrainStormUser.currentUser.invitedGroups[row - BrainStormUser.currentUser.invitedGroups.count].topic];
-        UILabel *joinedCreatorLabel = (UILabel *)[cell viewWithTag:2];
-        joinedCreatorLabel.text = [@"Created by " stringByAppendingString:BrainStormUser.currentUser.invitedGroups[row - BrainStormUser.currentUser.invitedGroups.count].creatorName];
+        UILabel *topicLabel = (UILabel *)[cell viewWithTag:1];
+        topicLabel.text = [@"【Invitation】" stringByAppendingString:BrainStormUser.currentUser.invitedGroups[idx].topic];
+        UILabel *creatorLabel = (UILabel *)[cell viewWithTag:2];
+        creatorLabel.text = [@"Created by " stringByAppendingString:BrainStormUser.currentUser.invitedGroups[idx].creatorName];
         UIButton *YesButton = (UIButton *)[cell viewWithTag:3];
 //        UIButton *NoButton = (UIButton *)[cell viewWithTag:4];
 //        UIButton *MoreInfo = (UIButton *)[cell viewWithTag:5];
         
         // Use tag to transfer
         [YesButton setTag:row];
-        [YesButton addTarget:self action:@selector(AgreeToJoin:) forControlEvents:UIControlEventTouchUpInside];
+        [YesButton addTarget:self action:@selector(agreeToJoin:) forControlEvents:UIControlEventTouchUpInside];
     } else {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
         cell.userInteractionEnabled = NO;
@@ -127,22 +126,23 @@
     return cell;
 }
 
-- (void)AgreeToJoin:(UIButton *)TapYes {
+- (void)agreeToJoin:(UIButton *)TapYes {
+    BrainStormGroup *group = BrainStormUser.currentUser.invitedGroups[TapYes.tag - BrainStormUser.currentUser.joinedGroups.count];
     UIAlertController *alertController =
     [UIAlertController alertControllerWithTitle:@"Agree to join this group?"
-                                        message:[@"Topic: " stringByAppendingString:BrainStormUser.currentUser.invitedGroups[TapYes.tag - BrainStormUser.currentUser.invitedGroups.count].topic]
+                                        message:[@"Topic: " stringByAppendingString:group.topic]
                                  preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Yes!" style:UIAlertActionStyleDefault
-                                                     handler:^(UIAlertAction *action) {
-                                                         UIViewController *vc = [BrainStormUser.currentUser joinGroupWithId:BrainStormUser.currentUser.invitedGroups[TapYes.tag - BrainStormUser.currentUser.joinedGroups.count].groupId];
-                                                         if (vc) {
-                                                             [self.navigationController pushViewController:vc animated:YES];
-                                                             [self refreshTableWithCompletionHandler:nil];
-                                                         }
-                                                     }];
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:nil];
-    [alertController addAction:okAction];
-    [alertController addAction:cancelAction];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Yes!" style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction *action) {
+                                                          UIViewController *vc = [BrainStormUser.currentUser joinGroupWithId:group.groupId];
+                                                          if (vc) {
+                                                              [self.navigationController pushViewController:vc animated:YES];
+                                                              [self refreshTableWithCompletionHandler:nil];
+                                                          }
+                                                      }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel"
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:nil]];
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
@@ -171,17 +171,18 @@
 
 - (void)refreshTableWithCompletionHandler:(void (^)(void))handler {
     __weak GroupListViewController *weakSelf = self;
-    [BrainStormUser.currentUser renewUserInBackgroundWithOption:RenewJoinedGroups | RenewInvitedGroups
-                                              completionHandler:^(NSError * _Nullable error) {
-                                                  if (error) {
-                                                      NSLog(@"Failed to refresh: %@", error.localizedDescription);
-                                                  } else {
-                                                      dispatch_async(dispatch_get_main_queue(), ^{
-                                                          [weakSelf.tableView reloadData];
-                                                          if (handler) handler();
-                                                      });
-                                                  }
-                                              }];
+    [BrainStormUser.currentUser
+     renewUserInBackgroundWithOption:BSURenewAllInfo
+     completionHandler:^(NSError * _Nullable error) {
+         if (error) {
+             NSLog(@"Failed to refresh: %@", error.localizedDescription);
+         } else {
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 [weakSelf.tableView reloadData];
+                 if (handler) handler();
+             });
+         }
+     }];
 }
 
 @end

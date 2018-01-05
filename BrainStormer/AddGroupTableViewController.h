@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 
 typedef NS_ENUM(NSInteger, AddGroupOption) {
-    JoinGroup,
-    CreateGroup,
+    AGJoinGroup,
+    AGCreateGroup,
 };
 
 typedef void (^AddGroupOptionCallback)(AddGroupOption option);
