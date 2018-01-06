@@ -127,18 +127,19 @@
 }
 
 - (void)agreeToJoin:(UIButton *)TapYes {
+    __weak GroupListViewController *weakSelf = self;
     BrainStormGroup *group = BrainStormUser.currentUser.invitedGroups[TapYes.tag - BrainStormUser.currentUser.joinedGroups.count];
     UIAlertController *alertController =
-    [UIAlertController alertControllerWithTitle:@"Agree to join this group?"
-                                        message:[@"Topic: " stringByAppendingString:group.topic]
+    [UIAlertController alertControllerWithTitle:@"Join this group?"
+                                        message:group.topic
                                  preferredStyle:UIAlertControllerStyleAlert];
-    [alertController addAction:[UIAlertAction actionWithTitle:@"Yes!" style:UIAlertActionStyleDefault
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Confirm"
+                                                        style:UIAlertActionStyleDefault
                                                       handler:^(UIAlertAction *action) {
-                                                          UIViewController *vc = [BrainStormUser.currentUser joinGroupWithId:group.groupId];
-                                                          if (vc) {
-                                                              [self.navigationController pushViewController:vc animated:YES];
-                                                              [self refreshTableWithCompletionHandler:nil];
-                                                          }
+                                                          [BrainStormUser.currentUser joinGroupWithId:group.groupId];
+                                                          GroupRoomViewController *vc = [[GroupRoomViewController alloc] initWithGroupId:group.groupId];
+                                                          [weakSelf.navigationController pushViewController:vc animated:YES];
+                                                          [weakSelf refreshTableWithCompletionHandler:nil];
                                                       }]];
     [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel"
                                                         style:UIAlertActionStyleDefault
@@ -151,12 +152,12 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSUInteger row = indexPath.row;
     
-    if (row < BrainStormUser.currentUser.invitedGroups.count) {
-        GroupRoomViewController *GroupRoom = [[GroupRoomViewController alloc] init];
-        GroupRoom.GroupId = BrainStormUser.currentUser.invitedGroups[row].groupId;
-        [self.navigationController pushViewController:GroupRoom animated:YES];
+    if (row < BrainStormUser.currentUser.joinedGroups.count) {
+        GroupRoomViewController *vc = [[GroupRoomViewController alloc] initWithGroupId:BrainStormUser.currentUser.joinedGroups[row].groupId];
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 

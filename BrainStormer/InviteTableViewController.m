@@ -57,11 +57,11 @@
 
 - (void)doneAction:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
-    NSString *names = @"";
+    NSMutableArray *names = [NSMutableArray array];
     for (BrainStormPeople *people in _selectedList) {
-        names = [names stringByAppendingString:people[BSPNameKey]];
+        [names addObject:people[BSPNameKey]];
     }
-    _callback(_selectedList.copy, names);
+    _callback(_selectedList.copy, [names componentsJoinedByString:@", "]);
     _callback = nil;
 }
 

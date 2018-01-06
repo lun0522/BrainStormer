@@ -7,13 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <ChatKit/LCChatKit.h>
-#import "PresentationViewController.h"
-#import "BoardViewController.h"
-#import "OptionsTableViewController.h"
 
 @interface GroupRoomViewController : UIViewController
 
-@property (nonatomic,strong) NSString *GroupId;
+- (instancetype _Nonnull)init NS_UNAVAILABLE;
+- (instancetype _Nonnull)initWithGroupId:(NSString * _Nonnull)groupId;
 
 @end

@@ -18,12 +18,6 @@
     [LCCKInputViewPluginTakePhoto registerSubclass];
     [LCCKInputViewPluginPickImage registerSubclass];
     [LCCKInputViewPluginLocation registerSubclass];
-    [self setAppInfo];
-    [self setFetchProfiles];
-    [self setConversationInvalidedHandler];
-    [self setLoadLatestMessages];
-    [self setLongPressMessage];
-    [self setForceReconect];
 }
 
 + (void)setAppInfo {
@@ -53,40 +47,40 @@
         }
         
         // Query for users
-        NSMutableArray *targetUsers = [[NSMutableArray alloc] init];
-        dispatch_queue_t queue = dispatch_queue_create("com.lun.brainstormer.downloadqueue", DISPATCH_QUEUE_CONCURRENT);
-        dispatch_semaphore_t semaphore = dispatch_semaphore_create(userIds.count);
-        [userIds enumerateObjectsUsingBlock:^(NSString * _Nonnull uid, NSUInteger idx, BOOL * _Nonnull stop) {
-            dispatch_async(queue, ^{
-                AVQuery *query = [AVQuery queryWithClassName:@"_User"];
-                [query getObjectInBackgroundWithId:uid
-                                             block:^(AVObject * _Nullable object,
-                                                     NSError * _Nullable error) {
-                                                 LCCKUser *user =
-                                                 [LCCKUser userWithUserId:uid
-                                                                     name:object[@"username"]
-                                                                avatarURL:object[@"avatarUrl"]];
-                                                 [targetUsers addObject:user];
-                                                 dispatch_semaphore_signal(semaphore);
-                }];
-            });
-        }];
+        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+        NSMutableArray *querys = [NSMutableArray array];
+        NSMutableArray *users = [NSMutableArray array];
+        for (NSString *uid in userIds) {
+            [querys addObject:[AVObject objectWithClassName:@"_User"
+                                                   objectId:uid]];
+        }
+        
+        [AVObject fetchAllInBackground:querys
+                                 block:^(NSArray * _Nullable objects,
+                                         NSError * _Nullable error) {
+                                     for (AVObject *user in objects) {
+                                         [users addObject:[LCCKUser userWithUserId:user.objectId
+                                                                              name:user[@"username"]
+                                                                         avatarURL:user[@"avatarUrl"]]];
+                                     }
+                                     dispatch_semaphore_signal(semaphore);
+                                 }];
         
         dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-        completionHandler([targetUsers copy], nil);
+        completionHandler(users.copy, nil);
     }];
 }
 
 + (void)setConversationInvalidedHandler {
     [[LCChatKit sharedInstance] setConversationInvalidedHandler:^(NSString *conversationId, LCCKConversationViewController *conversationController, id<LCCKUserDelegate> administrator, NSError *error) {
-        NSLog(@"Failed to create a conversation: %@",error);
+        if (error) NSLog(@"Failed to create a conversation: %@", error.localizedDescription);
         //Error code list：https://leancloud.cn/docs/realtime_v2.html#%E4%BA%91%E7%AB%AF%E9%94%99%E8%AF%AF%E7%A0%81%E8%AF%B4%E6%98%8E
     }];
 }
 
 + (void)setLoadLatestMessages {
     [[LCChatKit sharedInstance] setLoadLatestMessagesHandler:^(LCCKConversationViewController *conversationController, BOOL succeeded, NSError *error) {
-         if (!succeeded) NSLog(@"Failed to load previous chat record: %@",error);
+         if (error) NSLog(@"Failed to load previous chat record: %@", error.localizedDescription);
      }];
 }
 
@@ -130,9 +124,7 @@ toConversationViewController:(LCCKConversationViewController *)conversationViewC
             [[LCChatKit sharedInstance]  openWithClientId:[LCChatKit sharedInstance].clientId
                                                     force:force
                                                  callback:^(BOOL succeeded, NSError *error) {
-                                                     if (error != nil) {
-                                                         NSLog(@"Failed to reconnect: %@", error.localizedDescription);
-                                                     }
+                                                     if (error) NSLog(@"Failed to reconnect: %@", error.localizedDescription);
                                                  }];
             return;
         }else { // User says no
@@ -154,22 +146,22 @@ toConversationViewController:(LCCKConversationViewController *)conversationViewC
 }
 
 + (void)userDidLoginWithId:(NSString * _Nonnull)userId {
+    [self setAppInfo];
+    [self setFetchProfiles];
+    [self setConversationInvalidedHandler];
+    [self setLoadLatestMessages];
+    [self setLongPressMessage];
+    [self setForceReconect];
     [[LCChatKit sharedInstance] openWithClientId:userId
                                         callback:^(BOOL succeeded, NSError *error) {
-                                            if (!succeeded) {
-                                                NSLog(@"Failed to login chat: %@", error.localizedDescription);
-                                            }
+                                            if (error) NSLog(@"Failed to login chat: %@", error.localizedDescription);
                                         }];
 }
 
 + (void)userDidLogOut {
     [[LCChatKit sharedInstance] removeAllCachedProfiles];
     [[LCChatKit sharedInstance] closeWithCallback:^(BOOL succeeded, NSError *error) {
-        if (succeeded) {
-            NSLog(@"Logout chat success");
-        } else {
-            NSLog(@"Failed to logout chat: %@", error);
-        }
+        if (error) NSLog(@"Failed to logout chat: %@", error.localizedDescription);
     }];
 }
 

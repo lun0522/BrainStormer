@@ -8,11 +8,13 @@ import sys
 
 
 reload(sys)
-sys.setdefaultencoding('utf-8')
+sys.setdefaultencoding("utf-8")
 engine = leancloud.Engine(get_wsgi_application())
 
 @engine.define
 def create_group(**params):
+    print "Create group: {}".format(params["creatorId"])
+    
     # create a conversation
     conversation = leancloud.Conversation()
     conversation.set("name", params["topic"])
@@ -22,7 +24,7 @@ def create_group(**params):
     conversation.save()
     
     # create invitations
-    Invitation = leancloud.Object.extend('Invitation')
+    Invitation = leancloud.Object.extend("Invitation")
     for uid in params["invitedId"]:
         query = leancloud.Query(leancloud.User)
         if query.get(uid):
@@ -39,3 +41,34 @@ def create_group(**params):
     encryptor = md5.new()
     encryptor.update(qr_string) 
     return {"groupId": conversation.id, "encrypted": encryptor.hexdigest()}
+
+@engine.define
+def join_group(**params):
+    print "Join group: {} -> {}".format(params["userId"], params["groupId"])
+    
+    # add to members list
+    query_conv = leancloud.Query(leancloud.Conversation)
+    conversation = query_conv.get(params["groupId"])
+    members = conversation.get("members")
+    members.append(params["userId"])
+    conversation.set("members", members)
+    conversation.save()
+    
+    # delete invitations
+    Invitation = leancloud.Object.extend("Invitation")
+    query_inv = leancloud.Query(Invitation)
+    query_inv.equal_to("invitedId", params["userId"])
+    invitations = query_inv.find()
+    leancloud.Object.destroy_all(invitations)
+
+@engine.define
+def quit_group(**params):
+    print "Quit group: {} -> {}".format(params["userId"], params["groupId"])
+    
+    # remove from members list
+    query = leancloud.Query(leancloud.Conversation)
+    conversation = query.get(params["groupId"])
+    members = conversation.get("members")
+    members.remove(params["userId"])
+    conversation.set("members", members)
+    conversation.save()

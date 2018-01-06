@@ -191,7 +191,7 @@ static BrainStormUser *sharedUser = nil;
     // create group and fetch its id
     NSDictionary *params = @{
                              @"topic": topic,
-                             @"creatorId": BrainStormUser.currentUser.userId,
+                             @"creatorId": _user.objectId,
                              @"creatorName": _user.username,
                              @"invitedId": idList,
                              @"timestamp": [NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]],
@@ -209,7 +209,7 @@ static BrainStormUser *sharedUser = nil;
                                         if (_user[@"joinedGroups"]) [_user[@"joinedGroups"] addObject:newGroupId];
                                         else _user[@"joinedGroups"] = @[newGroupId].mutableCopy;
                                         [_user saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
-                                            if (error) NSLog(@"Failed to renew cloud: %@", error.localizedDescription);
+                                            if (error) NSLog(@"Failed to call cloud function: %@", error.localizedDescription);
                                         }];
                                         
                                         // renew local
@@ -222,7 +222,7 @@ static BrainStormUser *sharedUser = nil;
                                 }];
 }
 
-- (UIViewController * _Nullable)joinGroupWithId:(NSString * _Nonnull)groupId {
+- (void)joinGroupWithId:(NSString * _Nonnull)groupId {
     BrainStormGroup *willJoinGroup;
     for (BrainStormGroup *group in _invitedGroups) {
         if (group.groupId == groupId) {
@@ -233,23 +233,14 @@ static BrainStormUser *sharedUser = nil;
     
     if (!willJoinGroup) {
         NSLog(@"Failed to join group: Not in invited list!");
-        return nil;
+        return;
     }
     
     // renew cloud
-    [_user[@"joinedGroups"] addObject:groupId];
+    if (_user[@"joinedGroups"]) [_user[@"joinedGroups"] addObject:groupId];
+    else _user[@"joinedGroups"] = @[groupId];
     [_user saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
         if (error) NSLog(@"Failed to renew cloud: %@", error.localizedDescription);
-    }];
-    
-    // delete invitations
-    AVQuery *query = [AVQuery queryWithClassName:@"Invitation"];
-    [query whereKey:@"invitedId" equalTo:BrainStormUser.currentUser.userId];
-    [query whereKey:@"groupId" equalTo:groupId];
-    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        [AVObject deleteAllInBackground:objects block:^(BOOL succeeded, NSError * _Nullable error) {
-            if (error) NSLog(@"Failed to delete invitations: %@", error.localizedDescription);
-        }];
     }];
     
     // renew local
@@ -258,7 +249,16 @@ static BrainStormUser *sharedUser = nil;
                                               creatorName:willJoinGroup.creatorName]];
     [_invitedGroups removeObject:willJoinGroup];
     
-    return [[LCCKConversationViewController alloc] initWithConversationId:groupId];
+    // renew group members and delete invitations
+    NSDictionary *params = @{
+                             @"userId": _user.objectId,
+                             @"groupId": groupId,
+                             };
+    [AVCloud callFunctionInBackground:@"join_group"
+                       withParameters:params
+                                block:^(id object, NSError *error) {
+                                    if (error) NSLog(@"Failed to call cloud function: %@", error.localizedDescription);
+                                }];
 }
 
 - (void)quitGroupWithId:(NSString * _Nonnull)groupId {
@@ -283,6 +283,17 @@ static BrainStormUser *sharedUser = nil;
     
     // renew local
     [_joinedGroups removeObject:willQuitGroup];
+    
+    // renew group members
+    NSDictionary *params = @{
+                             @"userId": _user.objectId,
+                             @"groupId": groupId,
+                             };
+    [AVCloud callFunctionInBackground:@"quit_group"
+                       withParameters:params
+                                block:^(id object, NSError *error) {
+                                    if (error) NSLog(@"Failed to call cloud function: %@", error.localizedDescription);
+                                }];
 }
 
 - (void)renewUserInBackgroundWithOption:(RenewUserOption)option
@@ -304,7 +315,7 @@ static BrainStormUser *sharedUser = nil;
     }
     
     dispatch_group_t dispatchGroup = dispatch_group_create();
-    dispatch_queue_t dispatchQueue = dispatch_queue_create("com.lun.brainstormer.query", DISPATCH_QUEUE_CONCURRENT);
+    dispatch_queue_t dispatchQueue = dispatch_queue_create("com.lun.brainstormer.renewuser", DISPATCH_QUEUE_CONCURRENT);
     
     BOOL renewFriendsList   = option >> 0 & 1 || option >> 1 & 1;
     BOOL renewJoinedGroups  = option >> 0 & 1 || option >> 2 & 1;
@@ -342,9 +353,8 @@ static BrainStormUser *sharedUser = nil;
                         // query details of each group
                         NSMutableArray *querys = [NSMutableArray array];
                         for (NSString *groupId in _user[@"joinedGroups"]) {
-                            AVObject *conversation = [AVObject objectWithClassName:@"_Conversation"
-                                                                          objectId:groupId];
-                            [querys addObject:conversation];
+                            [querys addObject:[AVObject objectWithClassName:@"_Conversation"
+                                                                   objectId:groupId]];
                         }
                         
                         [AVObject fetchAllInBackground:querys block:^(NSArray * _Nullable objects,

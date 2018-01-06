@@ -64,7 +64,7 @@ typedef void (^RenewUserCompletionHandler)(NSError * _Nullable error);
 - (void)createGroupWithTopic:(NSString * _Nonnull)topic
                invitedIdList:(NSArray<NSString *> * _Nonnull)idList
            completionHandler:(CreateGroupCompletionHandler _Nonnull)handler;
-- (UIViewController * _Nullable)joinGroupWithId:(NSString * _Nonnull)groupId;
+- (void)joinGroupWithId:(NSString * _Nonnull)groupId;
 - (void)quitGroupWithId:(NSString * _Nonnull)groupId;
 - (void)renewUserInBackgroundWithOption:(RenewUserOption)option
                       completionHandler:(RenewUserCompletionHandler _Nullable)handler;
